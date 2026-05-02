@@ -554,9 +554,11 @@ function PillarRadar({scores,size=280,selected,onSelect}){
         const isOther = selected && !isSel;
         return (
           <line key={i} x1={cx} y1={cy} x2={p.ax} y2={p.ay}
-            stroke={p.e.color} strokeWidth={isSel ? 3 : 2}
-            opacity={isOther ? .25 : .55}
-            style={{transition:'all .3s ease'}}/>
+            stroke={p.e.color}
+            strokeWidth={isSel ? 5 : 2}
+            strokeLinecap="round"
+            opacity={isSel ? 1 : (isOther ? .2 : .55)}
+            style={{transition:'all .3s ease', filter: isSel ? `drop-shadow(0 0 6px ${p.e.color}) drop-shadow(0 0 14px ${p.e.color})` : 'none'}}/>
         );
       })}
       <polygon points={fillPoly} fill="rgba(43,49,60,.18)" stroke="#2b313c" strokeWidth="2.5"
