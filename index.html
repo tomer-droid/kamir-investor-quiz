@@ -848,12 +848,14 @@ function App(){
           </div>
           {isPrivacy ? (
             <div className="text-sm leading-relaxed space-y-3" style={{color:'var(--ink-2)'}}>
-              <p><strong>מי שומר את הפרטים?</strong> Kamir Group, מפעיל האתר. הפנייה אליי דרך:{' '}<a href="https://wa.me/972528022296" className="underline" style={{color:'var(--ink)'}}>וואטסאפ</a>.</p>
+              <p><strong>מי שומר את הפרטים?</strong> Kamir Group, מפעיל האתר. הפנייה אליי דרך:{' '}<a href="https://wa.me/972528022296" className="underline" style={{color:'var(--ink)'}}>וואטסאפ</a>{' '}או באימייל{' '}<a href="mailto:tomer@shaykes.com" className="underline" style={{color:'var(--ink)'}}>tomer@shaykes.com</a>.</p>
               <p><strong>אילו פרטים נאספים?</strong> שם, כתובת אימייל, ותשובות השאלון (ציון, תגית סוג משקיע). אין איסוף של מספרי תעודה, פרטי בנק או מידע פיננסי רגיש.</p>
               <p><strong>למה?</strong> כדי לחזור אליך עם תוצאות מותאמות וחומר רלוונטי, ולשפר את המגנט. לא נשתמש בפרטים לכל מטרה אחרת.</p>
               <p><strong>למי הם מועברים?</strong> לא יועברו לצד שלישי. נשמרים בגוגל שיטס בחשבון Kamir Group בלבד.</p>
               <p><strong>הזכויות שלך:</strong> בכל רגע אפשר לבקש לעיין, לתקן או למחוק את הפרטים שלך — שלח הודעה ב-WhatsApp ונטפל בזה תוך 7 ימי עסקים.</p>
+              <p><strong>גיל מינימלי:</strong> השירות מיועד לבני 18 ומעלה. איננו אוספים מידע מקטינים בידיעה.</p>
               <p><strong>Cookies:</strong> האתר אינו משתמש בקובצי Cookie למעקב. סרטון יוטיוב מוטמע עשוי להציב cookies של גוגל לפי מדיניות יוטיוב.</p>
+              <p style={{padding:'10px 12px',background:'rgba(184,92,62,.08)',border:'1px solid rgba(184,92,62,.20)',borderRadius:8,fontSize:13}}><strong>הבהרה חשובה — אינו ייעוץ פיננסי:</strong> התוכן באתר, השאלון והתוצאות הם מידע כללי ושיווקי בלבד, ואינם מהווים ייעוץ השקעות, ייעוץ מיסוי או ייעוץ משפטי אישי לפי חוק. כל החלטת השקעה צריכה להתבסס על ייעוץ פרטני מאיש מקצוע מורשה (יועץ השקעות, רואה חשבון, עורך דין) הבקיא בנסיבותייך האישיות. Kamir Group ותומר קמיר אינם נושאים באחריות להחלטות שמתקבלות על בסיס המידע המוצג כאן.</p>
               <p style={{fontSize:12,opacity:.7}}>עודכן: אפריל 2026. מדיניות זו פועלת ברוח חוק הגנת הפרטיות התשמ"א-1981 ותקנותיו.</p>
             </div>
           ) : (
@@ -867,9 +869,17 @@ function App(){
                 <li>גודל טקסט קריא וריווח אווירי</li>
                 <li>תמיכה במקלדת בכפתורים אינטראקטיביים</li>
                 <li>תאימות לקוראי מסך מודרניים</li>
+                <li>תפריט נגישות צף עם הגדרות גודל גופן, ניגודיות וגופן קריא</li>
               </ul>
               <p><strong>מה לא נגיש כיום:</strong> סרטון יוטיוב מוטמע — תרגום וכתוביות תלויים בערוץ. אם נתקלת בבעיה, פנה אליי ואטפל.</p>
-              <p><strong>פנייה לרכז נגישות:</strong> תומר קמיר · WhatsApp:{' '}<a href="https://wa.me/972528022296" className="underline" style={{color:'var(--ink)'}}>+972-52-8022296</a>. נשמח לקבל משוב ולתקן ליקויים תוך זמן סביר.</p>
+              <p style={{padding:'10px 12px',background:'rgba(43,49,60,.05)',borderRadius:8}}>
+                <strong>פרטי רכז הנגישות:</strong><br/>
+                שם: תומר קמיר<br/>
+                תפקיד: מנכ"ל Kamir Group ורכז נגישות<br/>
+                טלפון/WhatsApp:{' '}<a href="https://wa.me/972528022296" className="underline" style={{color:'var(--ink)'}}>+972-52-8022296</a><br/>
+                דוא"ל:{' '}<a href="mailto:tomer@shaykes.com" className="underline" style={{color:'var(--ink)'}}>tomer@shaykes.com</a><br/>
+                <span style={{fontSize:12,opacity:.8}}>נשמח לקבל משוב ולתקן ליקויים תוך זמן סביר (עד 60 יום על פי התקנות).</span>
+              </p>
               <p style={{fontSize:12,opacity:.7}}>עודכן: אפריל 2026.</p>
             </div>
           )}
@@ -1328,6 +1338,9 @@ function App(){
               </div>
             )}
 
+            <div className="mt-8 p-4 rounded-xl text-xs leading-relaxed" style={{background:'rgba(43,49,60,.05)',color:'var(--muted)',border:'1px solid rgba(43,49,60,.10)'}}>
+              <strong style={{color:'var(--ink-2)'}}>הבהרה:</strong> השאלון והתוצאות הם מידע כללי ושיווקי בלבד, ואינם מהווים ייעוץ השקעות, ייעוץ מיסוי או ייעוץ משפטי אישי. כל החלטת השקעה צריכה להתבסס על ייעוץ פרטני מאיש מקצוע מורשה. <button onClick={()=>setLegalModal('privacy')} className="underline" style={{color:'var(--ink-2)',background:'none',border:'none',cursor:'pointer',padding:0,fontWeight:700}}>קרא עוד במדיניות הפרטיות</button>.
+            </div>
             <button onClick={()=>{setScreen('landing');setIdx(0);setAnswers({});setBonus(null);setSent(false);}}
               className="mt-6 muted hover:text-black text-sm">← התחל שאלון מחדש</button>
             <p className="mt-4 text-xs muted text-center">
