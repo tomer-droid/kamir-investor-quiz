@@ -1,0 +1,1300 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>מדד המוכנות להשקעת נדל"ן בארה"ב | Kamir Group</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&family=Heebo:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ebe2cc;           /* קרם עמוק – מאוזן, לא בהיר מדי */
+    --bg-2:#f1e9d5;
+    --surface:#faf4e4;
+    --ink:#2b313c;
+    --ink-2:#4a5160;
+    --muted:#7d7868;
+    --cream:#d9c29a;
+    --accent:#2b313c;
+    --accent-soft:rgba(43,49,60,.08);
+  }
+  html,body{font-family:'Assistant','Heebo',sans-serif;background:var(--bg);color:var(--ink);}
+  .surface{background:var(--surface);border:1px solid rgba(43,49,60,.08);box-shadow:0 1px 3px rgba(43,49,60,.04);}
+  .ink{color:var(--ink);}
+  .muted{color:var(--muted);}
+  .cream-text{color:#a58348;}
+  .cta{background:var(--ink);color:#fff;transition:all .2s ease;}
+  .cta:hover{background:#1a1f28;transform:translateY(-1px);box-shadow:0 8px 24px rgba(43,49,60,.25);}
+  .cta-cream{background:var(--cream);color:var(--ink);transition:all .2s ease;}
+  .cta-cream:hover{background:#d9c29a;transform:translateY(-1px);}
+  .option-card{background:var(--surface);border:1.5px solid rgba(43,49,60,.1);transition:all .2s ease;}
+  .option-card:hover{transform:translateX(-3px);border-color:var(--ink);box-shadow:0 4px 12px rgba(43,49,60,.08);}
+  .option-card.selected{border-color:var(--ink);background:var(--accent-soft);box-shadow:0 0 0 2px rgba(43,49,60,.12);}
+  /* Scale question (1-10) */
+  .scale-wrap{padding:18px;background:var(--surface);border:1px solid rgba(43,49,60,.08);border-radius:16px;}
+  .scale-row{display:flex;gap:6px;flex-direction:row-reverse;}
+  .scale-btn{flex:1;min-width:0;aspect-ratio:1;display:flex;align-items:center;justify-content:center;border:2px solid transparent;border-radius:10px;font-weight:800;font-size:15px;color:var(--ink);cursor:pointer;transition:all .18s ease;position:relative;}
+  .scale-btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(43,49,60,.15);}
+  .scale-btn.selected{border-color:var(--ink);transform:translateY(-3px);box-shadow:0 8px 20px rgba(43,49,60,.22);}
+  .scale-anchor-row{display:flex;flex-direction:row-reverse;gap:6px;margin-top:10px;}
+  .scale-anchor{flex:1;min-width:0;text-align:center;font-size:11px;line-height:1.35;color:var(--ink-2);font-weight:600;}
+  .scale-anchor.filler{opacity:0;}
+  .scale-feedback{margin-top:14px;padding:12px 16px;background:rgba(43,49,60,.06);border-radius:10px;text-align:center;font-size:14px;color:var(--ink);font-weight:600;min-height:44px;display:flex;align-items:center;justify-content:center;transition:all .3s ease;}
+  /* Question visual accent */
+  .q-badge{display:inline-flex;align-items:center;gap:12px;padding:10px 16px 10px 20px;border-radius:999px;margin-bottom:18px;}
+  .q-badge-icon{width:38px;height:38px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+  .fade-in{animation:fade .4s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+  .progress-bar{height:6px;background:rgba(43,49,60,.08);border-radius:999px;overflow:hidden;}
+  .progress-bar>div{height:100%;background:var(--ink);transition:width .5s ease;}
+  .pillar-dot{width:10px;height:10px;border-radius:999px;}
+  .hero-img{position:relative;background-image:url('assets/hero.jpg');background-size:cover;background-position:center;}
+  .hero-img::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(235,226,204,.55) 0%,rgba(235,226,204,.35) 50%,rgba(235,226,204,.7) 100%);}
+  .hero-text h1,.hero-text p{text-shadow:0 1px 2px rgba(247,241,227,.9),0 0 20px rgba(247,241,227,.6);}
+  .hero-card{background:rgba(250,244,228,.82);backdrop-filter:blur(6px);border:1px solid rgba(43,49,60,.08);border-radius:22px;padding:28px 32px;box-shadow:0 10px 40px rgba(43,49,60,.08);}
+  @media(max-width:640px){.hero-card{padding:22px 20px;}}
+  .social-link{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:var(--surface);border:1px solid rgba(43,49,60,.12);font-weight:600;font-size:14px;color:var(--ink);transition:all .15s ease;}
+  .social-link:hover{background:var(--ink);color:#fff;border-color:var(--ink);transform:translateY(-1px);}
+  .hero-img > *{position:relative;z-index:1;}
+  .results-bg{position:relative;background-image:url('assets/results-bg.jpg');background-size:cover;background-position:center;background-attachment:fixed;}
+  .results-bg::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(235,226,204,.38) 0%,rgba(235,226,204,.56) 60%,rgba(235,226,204,.74) 100%);}
+  .results-bg > *{position:relative;z-index:1;}
+  .step-card{background:var(--surface);border:1px solid rgba(43,49,60,.08);border-radius:14px;padding:16px 12px;text-align:center;position:relative;transition:transform .2s ease;}
+  .step-card:hover{transform:translateY(-2px);}
+  .step-card.done{background:rgba(31,90,78,.08);border-color:rgba(31,90,78,.25);}
+  .step-card.done .step-num{background:#1f5a4e;color:#fff;}
+  .step-card.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .step-card.active .step-num{background:var(--cream);color:var(--ink);}
+  .step-num{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:999px;background:var(--accent-soft);color:var(--ink);font-weight:800;margin-bottom:6px;font-size:13px;}
+  .step-time{display:inline-block;padding:2px 8px;border-radius:999px;background:rgba(43,49,60,.06);font-size:10px;font-weight:700;color:var(--ink-2);letter-spacing:.3px;margin-bottom:6px;}
+  .step-card.done .step-time{background:rgba(31,90,78,.15);color:#1f5a4e;}
+  .step-card.active .step-time{background:rgba(217,194,154,.25);color:var(--cream);}
+  .step-arrow{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:16px;}
+  .logo{height:76px;width:auto;display:block;filter:invert(1) brightness(0.25) drop-shadow(0 0 18px rgba(247,241,227,1)) drop-shadow(0 0 8px rgba(247,241,227,1)) drop-shadow(0 4px 10px rgba(43,49,60,.3));}
+  @media(max-width:640px){
+    .logo{height:52px;}
+    .surface.rounded-3xl{padding:18px !important;}
+    .results-bg .pillar-info-inline{padding:12px 14px;}
+    .axis-card{padding:12px 14px !important;}
+    .step-card{padding:12px 10px;}
+  }
+  /* Category info popover */
+  .cat-btn{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:999px;background:rgba(43,49,60,.08);color:var(--ink);font-weight:800;font-size:12px;border:none;cursor:pointer;transition:all .15s ease;}
+  .cat-btn:hover{background:var(--ink);color:#fff;transform:scale(1.08);}
+  .cat-modal-bg{position:fixed;inset:0;background:rgba(43,49,60,.55);backdrop-filter:blur(4px);z-index:40;display:flex;align-items:center;justify-content:center;padding:24px;animation:fade .25s ease;}
+  .cat-modal{background:var(--surface);border-radius:18px;padding:28px;max-width:480px;width:100%;border:1px solid rgba(43,49,60,.1);box-shadow:0 20px 60px rgba(0,0,0,.25);}
+  .pie-wrap{position:relative;width:240px;height:240px;}
+  .pie-wrap svg{transform:rotate(-90deg);}
+  .pie-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+  .axis-card{background:var(--surface);border-radius:16px;padding:12px 14px;position:relative;overflow:hidden;border:1px solid rgba(43,49,60,.08);transition:transform .25s ease, box-shadow .25s ease;}
+  .axis-card:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(43,49,60,.10);}
+  .axis-card .axis-bar{height:6px;border-radius:999px;background:rgba(43,49,60,.08);overflow:hidden;margin-top:8px;position:relative;}
+  .axis-card .axis-bar>div{height:100%;border-radius:999px;transition:width 1.1s cubic-bezier(.2,.8,.2,1);box-shadow:inset 0 -1px 2px rgba(0,0,0,.08);}
+  .axis-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.3px;}
+  .axis-icon-wrap{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 3px 8px rgba(43,49,60,.10);flex-shrink:0;}
+  .axis-score{font-size:26px;font-weight:900;line-height:1;letter-spacing:-1px;}
+  @media(min-width:768px){
+    .axis-card{padding:16px 18px;border-radius:18px;}
+    .axis-card .axis-bar{height:8px;margin-top:10px;}
+    .axis-badge{padding:4px 11px;font-size:11px;}
+    .axis-icon-wrap{width:40px;height:40px;border-radius:12px;font-size:20px;}
+    .axis-score{font-size:32px;}
+  }
+  /* Pillar-complete toast (non-blocking) */
+  .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid rgba(43,49,60,.1);box-shadow:0 10px 30px rgba(43,49,60,.18);border-radius:999px;padding:10px 18px 10px 14px;display:flex;align-items:center;gap:10px;z-index:40;animation:toastIn .35s cubic-bezier(.2,1.3,.3,1),toastOut .4s ease 2s forwards;pointer-events:none;}
+  @keyframes toastIn{from{opacity:0;transform:translate(-50%,20px);}to{opacity:1;transform:translate(-50%,0);}}
+  @keyframes toastOut{to{opacity:0;transform:translate(-50%,-8px);}}
+  .toast-check{width:26px;height:26px;border-radius:999px;background:#1f5a4e;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;flex-shrink:0;}
+  /* Next step box (replaces tier label) */
+  .next-step-box{background:linear-gradient(135deg, rgba(31,90,78,.05), rgba(31,90,78,.12));border:1px solid rgba(31,90,78,.18);border-right:4px solid #1f5a4e;border-radius:16px;padding:16px 18px;}
+  .radar-wrap{position:relative;}
+  .radar-wrap svg{overflow:visible;}
+  .radar-vertex{cursor:pointer;transition:r .2s ease, filter .25s ease;}
+  .radar-vertex:hover{filter:brightness(1.15) drop-shadow(0 0 10px currentColor);}
+  /* Bonus badge */
+  .bonus-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:999px;background:linear-gradient(135deg, #f4d57a, #e8b54a);color:#5a3e0f;font-weight:900;font-size:14px;letter-spacing:.4px;box-shadow:0 6px 20px rgba(232,181,74,.35), inset 0 1px 0 rgba(255,255,255,.5);margin-bottom:14px;animation:bonusPop .5s cubic-bezier(.2,1.4,.3,1), bonusFloat 2.8s ease-in-out infinite 1s;}
+  .bonus-badge .spark{display:inline-block;animation:sparkSpin 2.4s ease-in-out infinite;font-size:16px;}
+  @keyframes bonusPop{0%{opacity:0;transform:scale(.6) translateY(8px);}100%{opacity:1;transform:scale(1) translateY(0);}}
+  @keyframes bonusFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-3px);}}
+  @keyframes sparkSpin{0%,100%{transform:rotate(0) scale(1);}50%{transform:rotate(20deg) scale(1.25);}}
+  /* Yes/No interactive buttons */
+  .yn-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .yn-btn{position:relative;border-radius:18px;padding:26px 18px;border:2.5px solid transparent;background:var(--surface);cursor:pointer;transition:all .25s cubic-bezier(.2,.8,.2,1);overflow:hidden;text-align:center;}
+  .yn-btn:hover{transform:translateY(-3px);}
+  .yn-btn .yn-icon{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:28px;font-weight:900;transition:all .25s ease;}
+  .yn-btn .yn-text{font-weight:900;font-size:22px;letter-spacing:.5px;transition:color .25s ease;}
+  .yn-btn .yn-glow{position:absolute;inset:0;border-radius:18px;opacity:0;transition:opacity .3s ease;pointer-events:none;}
+  .yn-yes .yn-icon{background:rgba(31,90,78,.12);color:#1f5a4e;}
+  .yn-yes:hover{border-color:#1f5a4e;background:rgba(31,90,78,.06);box-shadow:0 12px 28px rgba(31,90,78,.18);}
+  .yn-yes:hover .yn-icon{background:#1f5a4e;color:#fff;transform:scale(1.08);}
+  .yn-yes:hover .yn-text{color:#1f5a4e;}
+  .yn-yes.selected{border-color:#1f5a4e;background:linear-gradient(135deg, rgba(31,90,78,.10), rgba(31,90,78,.04));box-shadow:0 14px 32px rgba(31,90,78,.22);}
+  .yn-yes.selected .yn-icon{background:#1f5a4e;color:#fff;transform:scale(1.1);}
+  .yn-yes.selected .yn-text{color:#1f5a4e;}
+  .yn-yes.selected .yn-glow{opacity:1;background:radial-gradient(circle at 50% 0%, rgba(31,90,78,.18), transparent 60%);}
+  .yn-no .yn-icon{background:rgba(184,92,62,.12);color:#b85c3e;}
+  .yn-no:hover{border-color:#b85c3e;background:rgba(184,92,62,.06);box-shadow:0 12px 28px rgba(184,92,62,.18);}
+  .yn-no:hover .yn-icon{background:#b85c3e;color:#fff;transform:scale(1.08);}
+  .yn-no:hover .yn-text{color:#b85c3e;}
+  .yn-no.selected{border-color:#b85c3e;background:linear-gradient(135deg, rgba(184,92,62,.10), rgba(184,92,62,.04));box-shadow:0 14px 32px rgba(184,92,62,.22);}
+  .yn-no.selected .yn-icon{background:#b85c3e;color:#fff;transform:scale(1.1);}
+  .yn-no.selected .yn-text{color:#b85c3e;}
+  .yn-no.selected .yn-glow{opacity:1;background:radial-gradient(circle at 50% 0%, rgba(184,92,62,.18), transparent 60%);}
+  /* Pie segment hover */
+  .pie-wrap svg circle[stroke]:not([stroke^="rgba"]){cursor:pointer;}
+  @keyframes piePulse{0%,100%{filter:drop-shadow(0 4px 12px rgba(43,49,60,.08));}50%{filter:drop-shadow(0 4px 18px rgba(43,49,60,.18));}}
+  .pie-hint{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;background:rgba(43,49,60,.07);font-size:11px;font-weight:700;color:var(--ink);animation:hintPulse 2.2s ease-in-out infinite;}
+  @keyframes hintPulse{0%,100%{transform:translateY(0);background:rgba(43,49,60,.07);}50%{transform:translateY(-2px);background:rgba(43,49,60,.14);}}
+  .pie-hint-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ink);}
+  .pillar-info-inline{background:linear-gradient(135deg, rgba(43,49,60,.04), rgba(43,49,60,.08));border-radius:14px;padding:14px 16px;margin-top:14px;border-right:3px solid var(--ink);position:relative;animation:fade .3s ease;}
+  /* Gate house background */
+  .gate-bg{position:relative;background-image:url('https://lh3.googleusercontent.com/d/1FbDR91uQzP7-W3m_liaD0TOArW7oGuT2=w1600');background-size:cover;background-position:center;}
+  .gate-bg::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(235,226,204,.50) 0%,rgba(235,226,204,.22) 50%,rgba(235,226,204,.58) 100%);}
+  .gate-bg>*{position:relative;z-index:1;}
+  /* Pre-header */
+  .pre-header{display:inline-block;padding:6px 14px;border-radius:999px;background:rgba(43,49,60,.06);border:1px solid rgba(43,49,60,.08);font-size:12px;font-weight:600;color:var(--ink-2);letter-spacing:.3px;margin-bottom:14px;}
+  /* Score ring */
+  .score-ring{position:relative;width:220px;height:220px;}
+  .score-ring svg{transform:rotate(-90deg);}
+  .score-ring .bg-ring{stroke:rgba(43,49,60,.1);}
+  .score-ring .fg-ring{stroke:var(--ink);stroke-linecap:round;transition:stroke-dashoffset 1.2s cubic-bezier(.2,.8,.2,1);}
+  .score-ring .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .pillar-card{background:var(--surface);border:1px solid rgba(43,49,60,.08);border-radius:14px;padding:12px;position:relative;overflow:hidden;transition:transform .2s ease;}
+  .pillar-card:hover{transform:translateY(-3px);}
+  .pillar-card::before{content:'';position:absolute;top:0;right:0;width:50px;height:50px;border-radius:50%;filter:blur(24px);opacity:.35;}
+  .pillar-ring{position:relative;width:42px;height:42px;}
+  .pillar-ring svg{transform:rotate(-90deg);}
+  .pillar-ring .bg{stroke:rgba(43,49,60,.1);}
+  .pillar-ring .fg{stroke-linecap:round;transition:stroke-dashoffset 1s ease;}
+  .pillar-ring .num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--ink);}
+  .insight{background:var(--surface);border:1px solid rgba(43,49,60,.08);border-right:3px solid var(--ink);border-radius:12px;padding:14px 16px;}
+  .chip{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:var(--surface);border:1px solid rgba(43,49,60,.1);font-size:13px;color:var(--ink-2);}
+  .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(43,49,60,.15),transparent);}
+  input{background:var(--surface) !important;color:var(--ink) !important;border-color:rgba(43,49,60,.15) !important;}
+  input::placeholder{color:var(--muted);}
+  input:focus{outline:none;border-color:var(--ink) !important;box-shadow:0 0 0 3px rgba(43,49,60,.08);}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useMemo, useEffect } = React;
+
+/* ========= הגדרות לעריכה ========= */
+const CONFIG = {
+  whatsapp: '972528022296',
+  sheetsWebhook: 'https://script.google.com/macros/s/AKfycbyr-M5cwsYlGhZ81ZAtEUkgArJpzIAhiR5oa42GlAUXp-uIrLzLsyP5sTW6DfuKWk36/exec',
+  calendly: '',
+  youtubeId: '_uUF8Yrm1L0',
+  youtubeStart: 1484,
+  youtubeChannel: 'https://www.youtube.com/@TomerKamir',
+  instagram: 'https://www.instagram.com/tomerkamir/',
+};
+
+/* ========= נתוני השאלון ========= */
+const PILLARS = {
+  financial: { label:'כלכלי', sub:'הון ונזילות', color:'#ecd270' },
+  mental:    { label:'מנטלי', sub:'מסוגלות וקבלת החלטות', color:'#8cbde8' },
+  perceptual:{ label:'תפיסתי', sub:'אמון במודל', color:'#a890e8' },
+  personal:  { label:'אישי', sub:'יעדים וסביבה', color:'#8edcab' },
+};
+
+const QUESTIONS = [
+  { pillar:'financial', title:'מהו סך ההון העצמי הנזיל שעומד לרשותך להשקעה?',
+    options:[
+      { text:'מתחת ל-150,000 ש"ח', score:0 },
+      { text:'150,000 – 200,000 ש"ח', score:40 },
+      { text:'200,000 – 250,000 ש"ח', score:70 },
+      { text:'250,000 – 350,000 ש"ח', score:90 },
+      { text:'מעל 350,000 ש"ח', score:100 },
+    ]},
+  { pillar:'financial', title:'להשקעה איכותית בארה"ב דרוש הון של כ-200,000 ש"ח-250,000 ש"ח.',
+    options:[
+      { text:'יש לי את מלוא הסכום באופן עצמאי', score:100 },
+      { text:'אין לי את כל הסכום לבד – אצרף שותף למהלך', score:55 },
+      { text:'אין לי את הסכום וגם אין שותף פוטנציאלי', score:0 },
+    ]},
+  { pillar:'perceptual', title:'האם אתם בעלים של נכס נדל"ן?',
+    options:[
+      { text:'כן, מחזיק במספר נכסים להשקעה', score:100 },
+      { text:'כן, בעלים של נכס אחד כיום', score:85 },
+      { text:'היה לי נכס בעבר שמכרתי', score:65 },
+      { text:'לא, זו תהיה הפעם הראשונה שלי', score:30 },
+    ]},
+  { pillar:'perceptual', type:'yesno', title:'האם אתם מכירים אישית מישהו שמחזיק בנדל"ן להשקעה (לא למגורים)?',
+    options:[
+      { text:'כן', score:100 },
+      { text:'לא', score:20 },
+    ]},
+  { pillar:'perceptual', title:'במצב של אי-ודאות כלכלית בשווקים, באיזה אפיק תרגישו שהכסף שלכם הכי מוגן?',
+    options:[
+      { text:'בנדל"ן – זה העוגן הכי יציב ובטוח', score:100 },
+      { text:'שילוב של נדל"ן ומניות – פיזור הוא ההגנה', score:80 },
+      { text:'רק מניות/קריפטו – אפשר לצאת מהר', score:20 },
+      { text:'במזומן או פיקדון – נזילות מלאה', score:20 },
+    ]},
+  { pillar:'perceptual', title:'עד כמה אתה מאמין בנכסי נדל"ן ככלי לצמיחה כלכלית?',
+    options:[
+      { text:'מאמין מאוד – הבסיס הכי טוב ויציב לייצר הון', score:100 },
+      { text:'עוד מוצר השקעה בשוק, אופציה טובה לגיוון', score:65 },
+      { text:'עדיין בשלב גישוש, לא בטוח שזה הכלי הנכון עבורי', score:30 },
+      { text:'לא מאמין בנדל"ן, מעדיף אפיקים אחרים', score:0 },
+    ]},
+  { pillar:'perceptual', titleHtml:'האם אתם מכירים אישית מישהו שמחזיק בנדל"ן להשקעה <u>בחו"ל</u>?', title:'האם אתם מכירים אישית מישהו שמחזיק בנדל"ן להשקעה בחו"ל?',
+    options:[
+      { text:'כן, מכיר אנשים שמשקיעים ומרוצים', html:'כן, מכיר אנשים שמשקיעים <span style="color:#2d7a5f;font-weight:800">ומרוצים</span>', score:100 },
+      { text:'מכיר אנשים אך לא מעורב בפרטים', score:70 },
+      { text:'מכיר אנשים שמשקיעים ולא מרוצים', html:'מכיר אנשים שמשקיעים <span style="color:#b85c3e;font-weight:800">ולא מרוצים</span>', score:20 },
+      { text:'לא מכיר אף אחד שמשקיע בנדל"ן בחו"ל', score:20 },
+    ]},
+  { pillar:'mental', title:'מבחן הנזילה: חודשיים אחרי הרכישה יתגלה תיקון של 600$. מה התגובה שלך?',
+    options:[
+      { text:'יש רזרבה שהוגדרה מראש, מתקנים וממשיכים', score:100 },
+      { text:'אעמוד בהוצאה, אבל זה ילחיץ אותי ויערער לי את הביטחון בהשקעה', score:40 },
+      { text:'הוצאה כזו מערערת אותי לחלוטין — כנראה שהמודל הזה לא מתאים לי', score:0 },
+    ]},
+  { pillar:'mental', type:'scale',
+    title:'עד כמה דעה של חבר/קרוב משפחה (שלא משקיע בנדל"ן) תערער החלטה שקיבלת על בסיס נתונים מקצועיים?',
+    scaleLow:'אני נצמד למספרים ולמומחים. דעה ללא ניסיון היא "רעש רקע" מבחינתי',
+    scaleHigh:'יערער אותי מאוד. קשה לי להתקדם אם מישהו קרוב אליי חושב שזו טעות',
+    options:[
+      { text:'1', score:100 }, { text:'2', score:89 }, { text:'3', score:78 }, { text:'4', score:67 }, { text:'5', score:56 },
+      { text:'6', score:44 }, { text:'7', score:33 }, { text:'8', score:22 }, { text:'9', score:11 }, { text:'10', score:0 },
+    ]},
+  { pillar:'mental', title:'איך נראה תהליך קבלת ההחלטות שלך כשמוצגת לך עסקה רלוונטית?',
+    options:[
+      { text:'אם המספרים והלוגיקה מתחברים – חותם ומתקדם', score:100 },
+      { text:'לוקח כמה ימים לעבור שוב על הנתונים ולהתייעץ', score:50 },
+      { text:'נוטה לנתח כל פרט שוב ושוב, קשה לי להחליט', score:10 },
+    ]},
+  { pillar:'mental', title:'האם תרגיש בנוח להשקיע בנכס שמנוהל מרחוק וכנראה לא תגיע לבקר בו בפועל?',
+    options:[
+      { text:'מרגיש לי בנוח – אסמוך על צוות מקצועי בשטח שמנהל ומדווח באופן שוטף', score:100 },
+      { text:'בהתחלה זה ילחיץ אותי, אבל עם עדכונים שוטפים אצליח להסתגל', score:40 },
+      { text:'חייב לראות את הנכס בעיניים כמה פעמים, אחרת לא ארגיש שקט', score:0 },
+    ]},
+  { pillar:'mental', title:'כמה זמן עבר מהרגע שהתחלת לבחון השקעות בחו"ל?',
+    options:[
+      { text:'עד 3 חודשים', score:100 },
+      { text:'3–6 חודשים', score:80 },
+      { text:'חצי שנה עד שנה', score:50 },
+      { text:'שנה עד שנתיים', score:20 },
+      { text:'מעל שנתיים', score:10 },
+    ]},
+  { pillar:'personal', title:'עד כמה המשפחה/סביבה תומכת במהלך?',
+    options:[
+      { text:'אנחנו ביחד בזה לגמרי, זה יעד משותף', score:100 },
+      { text:'אני מחליט/ה לבד — הסביבה לא רלוונטית להחלטה', score:90 },
+      { text:'סך הכול יש תמיכה, אני המוביל/ה של המהלך', score:80 },
+      { text:'יש חילוקי דעות, לא השתכנענו שזה המהלך הנכון', score:40 },
+      { text:'אין הסכמה, יש התנגדות גדולה להשקעה כזאת', score:0 },
+    ]},
+  { pillar:'personal', title:'האם תזדקקו לכסף הזה בזמן הקרוב להוצאה גדולה (חתונה/רכב וכו\')?',
+    options:[
+      { text:'בכלל לא, אני לא אצטרך את הכסף לזמן הקרוב', score:100 },
+      { text:'אולי תהיה הוצאה, אבל יש חסכונות נוספים', score:90 },
+      { text:'רוב הסיכויים שאצטרך חלק גדול מהכסף בקרוב', score:40 },
+    ]},
+  { pillar:'personal', title:'לכמה זמן אתם מתכננים להשאיר את הכסף מושקע בנכס?',
+    options:[
+      { text:'5–10 שנים לפחות, רוצה לבנות משהו גדול', score:100 },
+      { text:'רווח גדול תוך 1–2 שנים ולצאת', score:50 },
+      { text:'עדיין לא יודע/ת, רוצה להוציא מתי שמתאים לי', score:0 },
+    ]},
+];
+
+const BONUS = {
+  intro:'שאלת בונוס',
+  hint:'התשובה שלך תקבע איזה מסלול נמליץ לך בדף התוצאות',
+  title:'איך אתה רואה את התפקיד שלך בתוך ההשקעה?',
+  options:[
+    { text:'המשקיע השקט',
+      sub:'אני רוצה נכס שייצר לי שקט נפשי — מומחים שינהלו הכל בזמן שאני מתפנה לחיים שלי.',
+      tag:'המשקיע השקט',
+      icon:'🧘',
+      btnColor:'#dbd6e8', resultColor:'#6e6388',
+      resultTitle:'מודל ה-Hands-Off',
+      resultSub:'אתה רוצה את היציבות והפירות של ההשקעה — תזרים שוטף וביטחון — בלי להתעסק בצד הניהולי. זה המודל שמתאים בדיוק כשעובדים עם מערך מקצועי בשטח שלוקח אחריות על כל מה שמסביב, כדי שאתה תקבל דוחות וצ׳קים בקצב קבוע.' },
+    { text:'השותף האסטרטגי',
+      sub:'אני רוצה להבין מה קורה ולהיות מעורב בהחלטות הגדולות, עם גב מקצועי שמלווה אותי בכל שלב.',
+      tag:'השותף האסטרטגי',
+      icon:'🤝',
+      btnColor:'#d4dcd0', resultColor:'#5f7a5e',
+      resultTitle:'מודל הליווי הצמוד',
+      resultSub:'אתה רוצה להוביל את ההחלטות, אבל מבין שכניסה לשוק לא מוכר דורשת עיניים בשטח וגב מקצועי. שילוב של ליווי וידע מאפשר לך להישאר בשליטה — בלי לקחת לבד את כל הסיכון של מתחילים.' },
+    { text:'היזם השאפתן',
+      sub:'אני רוצה ללמוד את התחום ולעסוק בו לעומק — לבנות יכולת עצמאית ולהוביל בעצמי.',
+      tag:'היזם השאפתן',
+      icon:'🚀',
+      btnColor:'#e3d6cc', resultColor:'#8a6a55',
+      resultTitle:'המסלול העצמאי',
+      resultSub:'אתה רוצה ללמוד את התחום ולעשות הכל בעצמך. הכי יעיל בשבילך — קהילות משקיעים, ספרות מקצועית ותוכניות הכשרה שיקצרו לך את עקומת הלמידה.' },
+  ]
+};
+
+/* ========= CTA helpers ========= */
+function waLink(lead, tier, score){
+  const name = (lead && lead.name) ? lead.name.trim() : '';
+  const opener = name ? `היי תומר! 👋 אני ${name}.` : 'היי תומר! 👋';
+  const msg = `${opener}\nסיימתי עכשיו את שאלון המוכנות וקיבלתי ציון ${score}.\nשמח לקבל ממך מילה על התוצאות שלי 🙏`;
+  return `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
+}
+
+const TIMING_OPTIONS = [
+  { value: 'תוך 3 חודשים', sub: 'מוכן לסגור בקרוב' },
+  { value: '3-6 חודשים',    sub: 'שלב אסטרטגי מתקדם' },
+  { value: '6-12 חודשים',   sub: 'מתכוון להתחיל השנה' },
+  { value: 'עוד לא בטוח',   sub: 'רוצה להבין את התחום קודם' },
+];
+
+async function sendToSheets(payload){
+  if(!CONFIG.sheetsWebhook) return;
+  try{
+    await fetch(CONFIG.sheetsWebhook, {
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload),
+    });
+  }catch(e){ console.warn('Sheets error', e); }
+}
+
+/* ========= קומפוננטות ========= */
+function Logo(){
+  return <img src="assets/logo-transparent.png" alt="Kamir Group" className="logo" onError={(e)=>{e.target.style.display='none';}}/>;
+}
+
+const PILLAR_DESCRIPTIONS = {
+  financial: 'היכולת הפיננסית שלך: הון נזיל להשקעה ורזרבה לאירועים בלתי צפויים. זה הבסיס.',
+  mental:    'איך אתה מקבל החלטות תחת אי-ודאות: שמירה על קור רוח, עמידה בלחץ חיצוני וחדות בלי להיתקע בניתוחי-יתר. המנוע שיחזיק לאורך זמן.',
+  perceptual:'מידת האמון שלך במודל של נדל"ן להשקעה, במיוחד מחוץ לישראל: תפיסת עולם, חוויית עבר ומה שקורה אצל אנשים סביבך. חוסר אמון = סיכוי גבוה ליציאה באמצע הדרך.',
+  personal:  'הסביבה והיעדים שלך: תמיכת המשפחה, אופק ההשקעה ומה צפוי בחיים בשנים הקרובות. ההחלטה צריכה להתאים לחיים שלך — לא רק למספרים.',
+};
+
+function ScoreRing({value,size=220,stroke=14,color}){
+  const r = (size - stroke) / 2;
+  const c = 2 * Math.PI * r;
+  const off = c - (value/100) * c;
+  return (
+    <div className="score-ring" style={{width:size,height:size}}>
+      <svg width={size} height={size}>
+        <circle cx={size/2} cy={size/2} r={r} strokeWidth={stroke} fill="none" className="bg-ring"/>
+        <circle cx={size/2} cy={size/2} r={r} strokeWidth={stroke} fill="none"
+          className="fg-ring" strokeDasharray={c} strokeDashoffset={off} style={color?{stroke:color}:{}}/>
+      </svg>
+    </div>
+  );
+}
+
+function PillarRing({value,color}){
+  const size=42, stroke=4, r=(size-stroke)/2, c=2*Math.PI*r, off=c-(value/100)*c;
+  return (
+    <div className="pillar-ring">
+      <svg width={size} height={size}>
+        <circle cx={size/2} cy={size/2} r={r} strokeWidth={stroke} fill="none" className="bg"/>
+        <circle cx={size/2} cy={size/2} r={r} strokeWidth={stroke} fill="none"
+          className="fg" stroke={color} strokeDasharray={c} strokeDashoffset={off}/>
+      </svg>
+      <div className="num" style={{fontSize:11}}>{value}</div>
+    </div>
+  );
+}
+
+const PILLAR_ICONS = {
+  financial: '💰', mental: '🧠', perceptual: '🎯', personal: '👨‍👩‍👧',
+};
+
+function PillarRadar({scores,size=280,selected,onSelect}){
+  const cx = size/2, cy = size/2, R = (size-70)/2;
+  const entries = Object.entries(PILLARS).map(([k,p])=>({k,...p,score:scores[k]||0}));
+  const n = entries.length;
+  const angles = entries.map((_,i)=> -Math.PI/2 + (i*2*Math.PI/n));
+  const points = entries.map((e,i)=>{
+    const a = angles[i];
+    const v = e.score/100;
+    return {
+      x: cx + R*v*Math.cos(a),
+      y: cy + R*v*Math.sin(a),
+      ax: cx + R*Math.cos(a),
+      ay: cy + R*Math.sin(a),
+      labelX: cx + (R+38)*Math.cos(a),
+      labelY: cy + (R+38)*Math.sin(a),
+      e
+    };
+  });
+  const ringPolys = [.25,.5,.75,1].map(r => entries.map((_,i)=>{
+    const a = angles[i];
+    return `${cx+R*r*Math.cos(a)},${cy+R*r*Math.sin(a)}`;
+  }).join(' '));
+  const fillPoly = points.map(p=>`${p.x},${p.y}`).join(' ');
+  const statusColor = (s) => s>=75 ? '#1f5a4e' : s>=50 ? '#a58348' : '#8b5a3e';
+  return (
+    <svg width={size} height={size} style={{overflow:'visible'}}>
+      {ringPolys.map((pts,i)=>(
+        <polygon key={i} points={pts} fill="none" stroke="rgba(43,49,60,.08)" strokeWidth="1"/>
+      ))}
+      {/* Colored spokes — each axis in its pillar color */}
+      {points.map((p,i)=>{
+        const isSel = selected === p.e.k;
+        const isOther = selected && !isSel;
+        return (
+          <line key={i} x1={cx} y1={cy} x2={p.ax} y2={p.ay}
+            stroke={p.e.color} strokeWidth={isSel ? 3 : 2}
+            opacity={isOther ? .25 : .55}
+            style={{transition:'all .3s ease'}}/>
+        );
+      })}
+      <polygon points={fillPoly} fill="rgba(43,49,60,.18)" stroke="#2b313c" strokeWidth="2.5"
+        style={{transition:'all .8s cubic-bezier(.2,.8,.2,1)'}}/>
+      {/* Vertices with larger click area */}
+      {points.map((p,i)=>{
+        const isSel = selected === p.e.k;
+        const isOther = selected && !isSel;
+        const r = isSel ? 13 : 10;
+        return (
+          <g key={i} onClick={()=>onSelect && onSelect(p.e.k)} style={{cursor:onSelect?'pointer':'default'}}>
+            {/* Larger transparent click area */}
+            <circle cx={p.x} cy={p.y} r="22" fill="transparent"/>
+            {/* Soft halo */}
+            <circle cx={p.x} cy={p.y} r={r+8} fill={p.e.color} opacity={isSel ? .35 : .15}
+              style={{transition:'all .3s ease'}}/>
+            {/* Main vertex */}
+            <circle cx={p.x} cy={p.y} r={r} fill={p.e.color} stroke="#fff" strokeWidth="3"
+              className="radar-vertex"
+              style={{color:p.e.color, opacity:isOther ? .55 : 1, filter: isSel ? `drop-shadow(0 0 12px ${p.e.color})` : 'drop-shadow(0 2px 6px rgba(43,49,60,.25))', transition:'all .3s ease'}}/>
+          </g>
+        );
+      })}
+      {points.map((p,i)=>{
+        const anchor = Math.abs(p.labelX - cx) < 6 ? 'middle' : (p.labelX > cx ? 'start' : 'end');
+        return (
+          <g key={i} style={{cursor:onSelect?'pointer':'default'}} onClick={()=>onSelect && onSelect(p.e.k)}>
+            <text x={p.labelX} y={p.labelY} textAnchor={anchor} dominantBaseline="middle"
+              fontSize="13" fontWeight="800" fill="#2b313c">
+              {PILLAR_ICONS[p.e.k]} {p.e.label}
+            </text>
+            <text x={p.labelX} y={p.labelY+15} textAnchor={anchor} dominantBaseline="middle"
+              fontSize="11" fontWeight="700" fill={statusColor(p.e.score)}>
+              {p.e.score}/100
+            </text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+function PillarPie({scores,size=240,selected,onSelect}){
+  const baseStroke = 36;
+  const r = (size - baseStroke - 8) / 2;
+  const c = 2 * Math.PI * r;
+  const cx = size/2, cy = size/2;
+  const entries = Object.entries(PILLARS).map(([k,p])=>({k,label:p.label,color:p.color,value:scores[k]||0}));
+  const sum = entries.reduce((a,b)=>a+b.value,0) || 1;
+  const gapPx = 3;
+  let cumFrac = 0;
+  const labels = [];
+  const segs = entries.map((e,i)=>{
+    const frac = e.value / sum;
+    const dash = Math.max(0, c * frac - gapPx);
+    const gap = c - dash;
+    const offset = -cumFrac * c;
+    const midFrac = cumFrac + frac/2;
+    const ang = -Math.PI/2 + midFrac * 2 * Math.PI;
+    const labelR = r;
+    labels.push({
+      x: cx + labelR * Math.cos(ang),
+      y: cy + labelR * Math.sin(ang),
+      value: e.value,
+      visible: frac > 0.05,
+      key: e.k,
+    });
+    cumFrac += frac;
+    const isSelected = selected === e.k;
+    const isOther = selected && !isSelected;
+    const stroke = isSelected ? baseStroke + 8 : baseStroke;
+    return (
+      <circle key={i} cx={cx} cy={cy} r={r} strokeWidth={stroke} fill="none"
+        stroke={e.color} strokeDasharray={`${dash} ${gap}`} strokeDashoffset={offset}
+        strokeLinecap="butt"
+        transform={`rotate(-90 ${cx} ${cy})`}
+        onClick={()=>onSelect && onSelect(e.k)}
+        style={{transition:'all .35s cubic-bezier(.2,.8,.2,1)',cursor:onSelect?'pointer':'default',opacity:isOther?.45:1,filter:isSelected?`drop-shadow(0 0 8px ${e.color})`:'none'}}/>
+    );
+  });
+  return (
+    <svg width={size} height={size} style={{filter:'drop-shadow(0 4px 12px rgba(43,49,60,.08))',transform:'none',overflow:'visible'}}>
+      <circle cx={cx} cy={cy} r={r} strokeWidth={baseStroke} fill="none" stroke="rgba(43,49,60,.06)"/>
+      {segs}
+      <circle cx={cx} cy={cy} r={r - baseStroke/2 - 2} fill="none" stroke="rgba(43,49,60,.04)" strokeWidth="1"/>
+      {labels.map((lp,i)=> lp.visible ? (
+        <text key={i} x={lp.x} y={lp.y} textAnchor="middle" dominantBaseline="central"
+          onClick={()=>onSelect && onSelect(lp.key)}
+          style={{fontSize:13,fontWeight:800,fill:'#2b313c',cursor:onSelect?'pointer':'default',paintOrder:'stroke',stroke:'rgba(250,244,228,.9)',strokeWidth:3,strokeLinejoin:'round',opacity:selected && selected!==lp.key ? .45 : 1, transition:'opacity .35s ease'}}>{lp.value}</text>
+      ) : null)}
+    </svg>
+  );
+}
+
+function App(){
+  const [screen,setScreen] = useState('landing');
+  const [idx,setIdx] = useState(0);
+  const [answers,setAnswers] = useState({});
+  const [bonus,setBonus] = useState(null);
+  const [lead,setLead] = useState({name:'',email:''});
+  const [sent,setSent] = useState(false);
+  const [catInfo,setCatInfo] = useState(null);
+  const [celebrating,setCelebrating] = useState(null);
+  const [timingModal,setTimingModal] = useState(false);
+  const [investTiming,setInvestTiming] = useState(null);
+  const [urlResults,setUrlResults] = useState(null);
+
+  useEffect(()=>{
+    const params = new URLSearchParams(window.location.search);
+    if(params.get('s')){
+      const pre = {
+        totalScore: parseInt(params.get('s'))||0,
+        financial: parseInt(params.get('f'))||0,
+        mental: parseInt(params.get('m'))||0,
+        perceptual: parseInt(params.get('p'))||0,
+        personal: parseInt(params.get('pr'))||0,
+        bonusTag: params.get('b') || '',
+      };
+      setUrlResults(pre);
+      setLead({name: params.get('n')||'', email: params.get('e')||''});
+      setScreen('results');
+    }
+  },[]);
+
+  const total = QUESTIONS.length;
+
+  const [gateSubmitting,setGateSubmitting] = useState(false);
+  const [leadError,setLeadError] = useState('');
+  const [legalModal,setLegalModal] = useState(null);
+
+  const pick = (optionIdx)=>{
+    const next = {...answers,[idx]:optionIdx};
+    setAnswers(next);
+    const currentPillar = QUESTIONS[idx].pillar;
+    const nextPillar = idx < total-1 ? QUESTIONS[idx+1].pillar : null;
+    const isTransition = nextPillar && nextPillar !== currentPillar;
+    setTimeout(()=>{
+      if(idx < total-1){
+        setIdx(idx+1);
+        if(isTransition){
+          setCelebrating(PILLARS[currentPillar].label);
+          setTimeout(()=>setCelebrating(null), 2400);
+        }
+      } else {
+        setScreen('bonus');
+      }
+    },250);
+  };
+
+  const pillarScores = useMemo(()=>{
+    if(urlResults) return {
+      financial:urlResults.financial, mental:urlResults.mental,
+      perceptual:urlResults.perceptual, personal:urlResults.personal
+    };
+    const acc = { financial:[], mental:[], perceptual:[], personal:[] };
+    Object.entries(answers).forEach(([qi,oi])=>{
+      const q = QUESTIONS[qi]; acc[q.pillar].push(q.options[oi].score);
+    });
+    const out = {};
+    Object.keys(PILLARS).forEach(k=>{
+      out[k] = acc[k].length ? Math.round(acc[k].reduce((a,b)=>a+b,0)/acc[k].length) : 0;
+    });
+    return out;
+  },[answers,urlResults]);
+
+  const totalScore = useMemo(()=>{
+    if(urlResults) return urlResults.totalScore;
+    const vals = Object.values(pillarScores);
+    return Math.round(vals.reduce((a,b)=>a+b,0)/vals.length);
+  },[pillarScores,urlResults]);
+
+  const tier = useMemo(()=>{
+    if(totalScore >= 87) return { label:'לתאם שיחת אסטרטגיה לרכישה', color:'#1f5a4e',
+      desc:'הפרופיל שלך מאוזן וחזק ברוב הפרמטרים. השלב הבא שלך הוא לעבור משלב הבחינה לשלב הביצוע.' };
+    if(totalScore >= 72) return { label:'לחזק פרמטרים שעוד לא מאוזנים', color:'#5a7a3e',
+      desc:'התשתית שלך טובה. חיזוק נקודתי בפרמטרים שעוד לא חזקים יוביל אותך למוכנות מלאה לפני רכישה.' };
+    if(totalScore >= 60) return { label:'לחזק כמה פרמטרים לפני רכישה', color:'#a58348',
+      desc:'יש לך בסיס טוב — במיוחד בחלק מהפרמטרים. כדאי לחזק את אלה שעוד לא במקום לפני שעוברים לרכישה בפועל.' };
+    if(totalScore >= 40) return { label:'להמשיך לבנות את הבסיס', color:'#c17840',
+      desc:'אתה בשלב חשוב של בנייה. חיזוק כמה מהפרמטרים יקרב אותך משמעותית למוכנות לרכישה.' };
+    return { label:'ללמוד את התחום ולבנות בסיס', color:'#b85c3e',
+      desc:'אתה בתחילת המסע — וזו נקודת זינוק מצוינת. השלב הבא שלך הוא לצבור ידע על השוק ולהתחיל לבנות בסיס פיננסי.' };
+  },[totalScore]);
+
+  const Celebration = () => celebrating ? (
+    <div className="toast" key={celebrating+idx}>
+      <div className="toast-check">✓</div>
+      <div>
+        <div className="text-xs muted leading-none">סיימת את הציר</div>
+        <div className="font-bold ink text-sm leading-tight">{celebrating}</div>
+      </div>
+    </div>
+  ) : null;
+
+  const TimingModal = () => timingModal ? (
+    <div className="cat-modal-bg" onClick={()=>setTimingModal(false)}>
+      <div className="cat-modal" onClick={e=>e.stopPropagation()} style={{maxWidth:520}}>
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <div className="text-xs muted font-semibold">לפני שנדבר</div>
+            <div className="font-extrabold ink text-xl">מתי אתה חושב שתרצה להשקיע?</div>
+          </div>
+          <button onClick={()=>setTimingModal(false)} className="cat-btn" aria-label="סגור">✕</button>
+        </div>
+        <p className="text-sm muted mb-4">כדי שאוכל להכין את השיחה נכון עבורך — מה הטווח הריאלי מבחינתך?</p>
+        <div className="space-y-2">
+          {TIMING_OPTIONS.map((o,i)=>(
+            <button key={i}
+              onClick={()=>{
+                setInvestTiming(o.value);
+                setTimingModal(false);
+                setTimeout(()=>{
+                  const url = waLink(lead, tier.label, totalScore, o.value);
+                  window.open(url, '_blank', 'noopener');
+                }, 50);
+              }}
+              className="option-card w-full text-right rounded-xl p-4">
+              <div className="font-semibold ink">{o.value}</div>
+              <div className="text-xs cream-text">{o.sub}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  ) : null;
+
+  const LegalModal = () => {
+    if(!legalModal) return null;
+    const isPrivacy = legalModal === 'privacy';
+    return (
+      <div className="cat-modal-bg" onClick={()=>setLegalModal(null)}>
+        <div className="cat-modal" onClick={e=>e.stopPropagation()} style={{maxWidth:560,maxHeight:'85vh',overflowY:'auto'}}>
+          <div className="flex items-center justify-between mb-4">
+            <div className="font-extrabold ink text-xl">{isPrivacy ? 'מדיניות פרטיות' : 'הצהרת נגישות'}</div>
+            <button onClick={()=>setLegalModal(null)} className="cat-btn" aria-label="סגור">✕</button>
+          </div>
+          {isPrivacy ? (
+            <div className="text-sm leading-relaxed space-y-3" style={{color:'var(--ink-2)'}}>
+              <p><strong>מי שומר את הפרטים?</strong> Kamir Group, מפעיל האתר. הפנייה אליי דרך:{' '}<a href="https://wa.me/972528022296" className="underline" style={{color:'var(--ink)'}}>וואטסאפ</a>.</p>
+              <p><strong>אילו פרטים נאספים?</strong> שם, כתובת אימייל, ותשובות השאלון (ציון, תגית סוג משקיע). אין איסוף של מספרי תעודה, פרטי בנק או מידע פיננסי רגיש.</p>
+              <p><strong>למה?</strong> כדי לחזור אליך עם תוצאות מותאמות וחומר רלוונטי, ולשפר את המגנט. לא נשתמש בפרטים לכל מטרה אחרת.</p>
+              <p><strong>למי הם מועברים?</strong> לא יועברו לצד שלישי. נשמרים בגוגל שיטס בחשבון Kamir Group בלבד.</p>
+              <p><strong>הזכויות שלך:</strong> בכל רגע אפשר לבקש לעיין, לתקן או למחוק את הפרטים שלך — שלח הודעה ב-WhatsApp ונטפל בזה תוך 7 ימי עסקים.</p>
+              <p><strong>Cookies:</strong> האתר אינו משתמש בקובצי Cookie למעקב. סרטון יוטיוב מוטמע עשוי להציב cookies של גוגל לפי מדיניות יוטיוב.</p>
+              <p style={{fontSize:12,opacity:.7}}>עודכן: אפריל 2026. מדיניות זו פועלת ברוח חוק הגנת הפרטיות התשמ"א-1981 ותקנותיו.</p>
+            </div>
+          ) : (
+            <div className="text-sm leading-relaxed space-y-3" style={{color:'var(--ink-2)'}}>
+              <p><strong>המחויבות שלנו:</strong> אתר זה נבנה במאמץ להנגיש אותו לכלל המשתמשים, כולל אנשים עם מוגבלות, בהתאם לרוח תקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), התשע"ג-2013.</p>
+              <p><strong>מה כבר נעשה:</strong></p>
+              <ul style={{paddingRight:18,listStyle:'disc'}}>
+                <li>תמיכה בניווט מקלדת (Tab/Enter)</li>
+                <li>טקסט חלופי לתמונות וקריאות תוויות (aria-labels)</li>
+                <li>ניגודיות צבעים גבוהה</li>
+                <li>גודל טקסט קריא וריווח אווירי</li>
+                <li>תמיכה במקלדת בכפתורים אינטראקטיביים</li>
+                <li>תאימות לקוראי מסך מודרניים</li>
+              </ul>
+              <p><strong>מה לא נגיש כיום:</strong> סרטון יוטיוב מוטמע — תרגום וכתוביות תלויים בערוץ. אם נתקלת בבעיה, פנה אליי ואטפל.</p>
+              <p><strong>פנייה לרכז נגישות:</strong> תומר קמיר · WhatsApp:{' '}<a href="https://wa.me/972528022296" className="underline" style={{color:'var(--ink)'}}>+972-52-8022296</a>. נשמח לקבל משוב ולתקן ליקויים תוך זמן סביר.</p>
+              <p style={{fontSize:12,opacity:.7}}>עודכן: אפריל 2026.</p>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  const CatModal = () => catInfo ? (
+    <div className="cat-modal-bg" onClick={()=>setCatInfo(null)}>
+      <div className="cat-modal" onClick={e=>e.stopPropagation()}>
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-3">
+            <div className="text-3xl">{PILLAR_ICONS[catInfo]}</div>
+            <div>
+              <div className="font-extrabold ink text-xl">{PILLARS[catInfo].label}</div>
+              <div className="text-xs muted">{PILLARS[catInfo].sub}</div>
+            </div>
+          </div>
+          <button onClick={()=>setCatInfo(null)} className="cat-btn" aria-label="סגור">✕</button>
+        </div>
+        <p className="leading-relaxed" style={{color:'var(--ink-2)'}}>{PILLAR_DESCRIPTIONS[catInfo]}</p>
+      </div>
+    </div>
+  ) : null;
+
+  /* ---------- LANDING ---------- */
+  if(screen==='landing') return (
+    <div className="min-h-screen hero-img"><CatModal/>
+      <div className="min-h-screen flex flex-col">
+        <header className="p-5 md:p-8 flex items-center justify-between">
+          <span className="muted text-sm hidden md:block">Invest with Confidence</span>
+          <Logo/>
+        </header>
+        <div className="flex-1 flex items-center justify-center p-6">
+          <div className="max-w-3xl w-full fade-in hero-text">
+            <div className="hero-card">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 ink">
+              האם אתה <span className="cream-text">באמת מוכן</span><br className="hidden sm:block"/>
+              {' '}לרכוש נכס בארה"ב?
+            </h1>
+            <ul className="mb-8 max-w-2xl space-y-2 font-semibold text-base md:text-lg" style={{color:'var(--ink)',listStyle:'none',padding:0}}>
+              <li className="flex items-center gap-2"><span style={{color:'#a58348'}}>●</span>4 דקות</li>
+              <li className="flex items-center gap-2"><span style={{color:'#a58348'}}>●</span>15 שאלות קצרות</li>
+            </ul>
+            <p className="text-sm muted mb-3 max-w-2xl">השאלון בוחן אותך לפי 4 הפרמטרים שמחליטים אם הנכס הראשון יצליח. לחץ על i כדי לקרוא על כל פרמטר:</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-10">
+              {Object.entries(PILLARS).map(([k,p])=>(
+                <div key={k} className="surface rounded-lg relative" style={{padding:'8px 10px'}}>
+                  <button onClick={()=>setCatInfo(k)} className="cat-btn" aria-label={`מידע על ${p.label}`}
+                    style={{position:'absolute',top:6,left:6,width:18,height:18,fontSize:10}}>i</button>
+                  <div className="flex items-center gap-2">
+                    <span className="pillar-dot" style={{background:p.color,boxShadow:`0 0 0 3px ${p.color}33`,flexShrink:0}}></span>
+                    <div className="font-bold leading-tight">{p.label}</div>
+                  </div>
+                  <div className="text-xs muted leading-tight mt-0.5">{p.sub}</div>
+                </div>
+              ))}
+            </div>
+            <button onClick={()=>setScreen('quiz')}
+              className="cta font-bold px-8 py-4 rounded-xl text-lg">
+              בואו נתחיל ←
+            </button>
+            <p className="mt-3 text-xs" style={{color:'var(--ink-2)'}}>תוצאה מיידית בסיום</p>
+            <p className="mt-5 text-xs muted">ליווי משקיעים ישראלים לרכישת נדל"ן בארה"ב</p>
+            <p className="mt-2 text-xs muted">
+              <button onClick={()=>setLegalModal('privacy')} className="underline" style={{color:'var(--ink-2)',background:'none',border:'none',cursor:'pointer',padding:0,fontWeight:600}}>מדיניות פרטיות</button>
+              {' · '}
+              <button onClick={()=>setLegalModal('access')} className="underline" style={{color:'var(--ink-2)',background:'none',border:'none',cursor:'pointer',padding:0,fontWeight:600}}>הצהרת נגישות</button>
+            </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <LegalModal/>
+    </div>
+  );
+
+  /* ---------- BONUS ---------- */
+  if(screen==='bonus') return (
+    <div className="min-h-screen flex flex-col">
+      <header className="p-5 md:p-8"><Logo/></header>
+      <div className="flex-1 flex items-center justify-center p-6">
+        <div className="max-w-2xl w-full fade-in">
+          <div className="bonus-badge"><span className="spark">✨</span>{BONUS.intro}<span className="spark">🎁</span></div>
+          <h2 className="text-2xl md:text-3xl font-bold mb-1 ink">{BONUS.title}</h2>
+          <div className="text-xs muted mb-6">{BONUS.hint}</div>
+          <div className="space-y-3">
+            {BONUS.options.map((o,i)=>(
+              <button key={i} onClick={()=>{setBonus(i);setScreen('gate');}}
+                className="option-card w-full text-right rounded-xl p-5 relative overflow-hidden"
+                style={{borderColor:o.btnColor,background:o.btnColor}}>
+                <div style={{position:'absolute',top:0,right:0,bottom:0,width:5,background:'rgba(43,49,60,.35)'}}></div>
+                <div className="flex items-start gap-3" style={{paddingRight:12}}>
+                  <div className="flex items-center justify-center flex-shrink-0" style={{width:38,height:38,borderRadius:'50%',background:'rgba(255,255,255,.5)',fontSize:20,marginTop:2}}>{o.icon}</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-extrabold ink mb-1">{o.text}</div>
+                    <div className="text-sm leading-relaxed" style={{color:'#4a4638'}}>{o.sub}</div>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  /* ---------- GATE (איסוף פרטים לפני תוצאות) ---------- */
+  if(screen==='gate'){
+    const isValidEmail = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test((e||'').trim());
+    const submitGate = ()=>{
+      if(!lead.name.trim()){ setLeadError('יש למלא שם מלא'); return; }
+      if(!lead.email.trim()){ setLeadError('יש למלא כתובת אימייל'); return; }
+      if(!isValidEmail(lead.email)){ setLeadError('כתובת האימייל לא נראית תקינה'); return; }
+      setLeadError('');
+      const now = new Date();
+      const pad = n => String(n).padStart(2,'0');
+      const date = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
+      const time = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+      const payload = {
+        date, time,
+        ...lead, totalScore, tier:tier.label,
+        financial:pillarScores.financial, mental:pillarScores.mental,
+        perceptual:pillarScores.perceptual, personal:pillarScores.personal,
+        bonus:bonus!=null?BONUS.options[bonus].tag:'',
+      };
+      sendToSheets(payload);
+      setScreen('results');
+    };
+
+    return (
+      <div className="min-h-screen flex flex-col gate-bg">
+        <header className="p-5 md:p-8"><Logo/></header>
+        <div className="flex-1 flex items-center justify-center p-6">
+          <div className="max-w-xl w-full fade-in">
+            <div className="surface rounded-2xl p-8 md:p-10 text-center" style={{background:'rgba(250,244,228,.92)',backdropFilter:'blur(6px)'}}>
+              <div className="mx-auto mb-5 flex items-center justify-center rounded-full" style={{width:64,height:64,background:'rgba(43,49,60,.08)'}}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{color:'var(--ink)'}}>
+                  <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                </svg>
+              </div>
+              <h2 className="text-2xl md:text-3xl font-extrabold ink mb-6">סיימת את השאלון!</h2>
+              <div className="space-y-3 mb-3">
+                <input value={lead.name} onChange={e=>{setLead({...lead,name:e.target.value});if(leadError)setLeadError('');}}
+                  placeholder="שם מלא" className="rounded-lg px-4 py-3 border" style={{width:'100%',maxWidth:'340px',display:'block',margin:'0 auto',textAlign:'center'}}/>
+                <input type="email" inputMode="email" autoComplete="email" value={lead.email}
+                  onChange={e=>{setLead({...lead,email:e.target.value});if(leadError)setLeadError('');}}
+                  onBlur={()=>{ if(lead.email.trim() && !isValidEmail(lead.email)) setLeadError('כתובת האימייל לא נראית תקינה'); }}
+                  placeholder="אימייל" className="rounded-lg px-4 py-3 border" style={{width:'100%',maxWidth:'340px',display:'block',margin:'0 auto',textAlign:'center',borderColor: leadError ? '#b85c3e' : undefined}}/>
+              </div>
+              {leadError && (
+                <div style={{maxWidth:340,margin:'0 auto 14px',color:'#b85c3e',fontSize:13,fontWeight:600,display:'flex',alignItems:'center',justifyContent:'center',gap:6}}>
+                  <span style={{display:'inline-flex',alignItems:'center',justifyContent:'center',width:18,height:18,borderRadius:'50%',background:'#b85c3e',color:'#fff',fontSize:11,fontWeight:900}}>!</span>
+                  {leadError}
+                </div>
+              )}
+              <button onClick={submitGate} disabled={gateSubmitting}
+                className="cta font-bold px-8 py-4 rounded-xl w-full disabled:opacity-60">
+                {gateSubmitting ? 'שולח...' : 'חשוף את התוצאות שלי ←'}
+              </button>
+              <p className="mt-4 text-xs muted leading-relaxed">בלחיצה על הכפתור אתה מאשר שמירת הפרטים לצורך מענה אישי. ראה <button onClick={()=>setLegalModal('privacy')} className="underline" style={{color:'var(--ink)',fontWeight:600,background:'none',border:'none',cursor:'pointer',padding:0}}>מדיניות פרטיות</button> ו<button onClick={()=>setLegalModal('access')} className="underline" style={{color:'var(--ink)',fontWeight:600,background:'none',border:'none',cursor:'pointer',padding:0}}>הצהרת נגישות</button>.</p>
+            </div>
+          </div>
+        </div>
+        <LegalModal/>
+      </div>
+    );
+  }
+
+  /* ---------- RESULTS ---------- */
+  if(screen==='results'){
+    const chartData = Object.entries(PILLARS).map(([k,p])=>({ name:p.label, value:pillarScores[k], fill:p.color }));
+    const bonusLabel = urlResults?.bonusTag || (bonus!=null ? BONUS.options[bonus].tag : '');
+
+    return (
+      <div className="min-h-screen flex flex-col results-bg">
+        <header className="p-4 md:p-5 flex justify-end" style={{position:'sticky',top:0,zIndex:30,background:'rgba(235,226,204,.78)',backdropFilter:'blur(10px)',borderBottom:'1px solid rgba(43,49,60,.06)'}}>
+          <img src="assets/logo-transparent.png" alt="Kamir Group" onError={(e)=>{e.target.style.display='none';}}
+            style={{height:54,width:'auto',display:'block',filter:'invert(1) brightness(0.25) drop-shadow(0 2px 6px rgba(43,49,60,.25))'}}/>
+        </header>
+        <div className="flex-1 p-6 md:p-10">
+          <div className="max-w-5xl mx-auto fade-in">
+            {/* Hero — radar profile + next step */}
+            <div className="text-center mb-4">
+              <h2 className="text-2xl md:text-3xl font-extrabold ink mb-1">הפרופיל שלך</h2>
+              <p className="text-xs md:text-sm muted">תמונת מצב של 4 הפרמטרים שמחליטים על מוכנות לרכישת נכס בארה"ב</p>
+            </div>
+            <div className="surface rounded-3xl p-5 md:p-7 mb-5">
+              <div className="flex flex-col md:flex-row items-center gap-5 md:gap-7">
+                <div className="flex flex-col items-center flex-shrink-0 radar-wrap">
+                  <PillarRadar scores={pillarScores} size={280} selected={catInfo} onSelect={(k)=>setCatInfo(catInfo===k ? null : k)}/>
+                  <div className="pie-hint mt-3">
+                    <span className="pie-hint-dot"></span>
+                    {catInfo ? 'לחץ על נקודה אחרת או על השורה' : 'לחץ על נקודה לפרטים'}
+                  </div>
+                </div>
+                <div className="flex-1 w-full">
+                  <div className="next-step-box mb-4" style={{borderRightColor:tier.color, background:`linear-gradient(135deg, ${tier.color}0F, ${tier.color}1F)`,borderColor:`${tier.color}30`}}>
+                    <div className="text-xs font-bold mb-1" style={{color:tier.color, letterSpacing:'.4px'}}>↓ המהלך הבא שלך</div>
+                    <div className="font-extrabold ink text-lg md:text-xl leading-tight mb-1">{tier.label}</div>
+                    <div className="text-sm leading-relaxed" style={{color:'var(--ink-2)'}}>{tier.desc}</div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    {Object.entries(PILLARS).map(([k,p])=>{
+                      const s = pillarScores[k];
+                      const status = s>=75 ? {label:'חזק',color:'#1f5a4e'} : s>=50 ? {label:'מבוסס',color:'#a58348'} : {label:'בפיתוח',color:'#8b5a3e'};
+                      const isActive = catInfo === k;
+                      const isDimmed = catInfo && !isActive;
+                      return (
+                        <button key={k} type="button" onClick={()=>setCatInfo(catInfo===k ? null : k)}
+                          className="text-right rounded-xl px-3 py-2.5"
+                          style={{
+                            background: isActive ? `${p.color}66` : `${p.color}22`,
+                            borderRight:`3px solid ${p.color}`,
+                            opacity: isDimmed ? .55 : 1,
+                            boxShadow: isActive ? `0 0 0 2px ${p.color}, 0 6px 16px ${p.color}33` : 'none',
+                            transition:'all .25s ease',
+                            cursor:'pointer',
+                            border:'none',
+                          }}>
+                          <div className="flex items-center gap-1.5 mb-1">
+                            <span style={{fontSize:14}}>{PILLAR_ICONS[k]}</span>
+                            <div className="font-bold ink text-xs leading-tight">{p.label}</div>
+                            <span className="cat-btn" aria-hidden="true" style={{width:14,height:14,fontSize:8}}>i</span>
+                          </div>
+                          <div className="flex items-baseline justify-between">
+                            <span className="font-bold" style={{color:status.color,fontSize:10}}>● {status.label}</span>
+                            <span className="font-extrabold ink" style={{fontSize:16,lineHeight:1}}>{s}<span className="muted" style={{fontSize:9,fontWeight:600}}>/100</span></span>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+              {catInfo && (
+                <div className="pillar-info-inline mt-4" style={{borderRightColor: PILLARS[catInfo].color}}>
+                  <button onClick={()=>setCatInfo(null)} aria-label="סגור"
+                    style={{position:'absolute',top:8,left:10,background:'rgba(43,49,60,.08)',border:'none',width:22,height:22,borderRadius:'50%',cursor:'pointer',fontWeight:900,fontSize:12,color:'var(--ink)'}}>✕</button>
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span style={{fontSize:18}}>{PILLAR_ICONS[catInfo]}</span>
+                    <span className="font-extrabold ink text-sm">{PILLARS[catInfo].label}</span>
+                    <span className="text-xs muted">— {PILLARS[catInfo].sub}</span>
+                  </div>
+                  <p className="text-sm leading-relaxed" style={{color:'var(--ink-2)',paddingLeft:24}}>{PILLAR_DESCRIPTIONS[catInfo]}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Insights — Leading / Developing axis */}
+            <div className="grid md:grid-cols-2 gap-4 mb-8">
+              {(()=>{
+                const sorted = Object.entries(pillarScores).sort((a,b)=>b[1]-a[1]);
+                const top = sorted[0], low = sorted[sorted.length-1];
+                const allEqual = top[1] === low[1];
+                const showLow = !allEqual && low[1] < 85;
+                const mkCard = (key,val,kind) => {
+                  const p = PILLARS[key];
+                  const isTop = kind==='top';
+                  const isBalanced = kind==='balanced';
+                  const accentColor = (isTop||isBalanced) ? '#1f5a4e' : '#a06a2c';
+                  const accentSoft = (isTop||isBalanced) ? 'rgba(31,90,78,.10)' : 'rgba(160,106,44,.12)';
+                  const badgeIcon = isBalanced ? '✓' : isTop ? '★' : '↗';
+                  const badgeText = isBalanced ? 'הצירים שלך מאוזנים' : isTop ? `הציר המוביל: ${p.label}` : `פוטנציאל לשיפור: ${p.label}`;
+                  return (
+                    <div className="axis-card" key={kind} style={{borderTop:`3px solid ${accentColor}`}}>
+                      <div style={{position:'absolute',top:-30,right:-30,width:120,height:120,borderRadius:'50%',filter:'blur(40px)',opacity:.4,background:p.color}}></div>
+                      <div className="flex items-center gap-2.5 relative">
+                        <div className="axis-icon-wrap" style={{background:p.color}}>{PILLAR_ICONS[key]}</div>
+                        <div className="flex-1 min-w-0">
+                          <span className="axis-badge" style={{background:accentSoft,color:accentColor,marginBottom:2}}>
+                            <span style={{fontSize:11}}>{badgeIcon}</span>{badgeText}
+                          </span>
+                          <div className="text-sm md:text-base font-extrabold ink leading-tight">{p.label}</div>
+                        </div>
+                        <div className="flex items-baseline gap-0.5 flex-shrink-0">
+                          <div className="axis-score" style={{color:accentColor}}>{val}</div>
+                          <div className="text-xs muted font-semibold">/100</div>
+                        </div>
+                      </div>
+                      <div className="axis-bar relative"><div style={{width:`${val}%`,background:`linear-gradient(90deg, ${p.color}, ${accentColor}80)`}}></div></div>
+                      <div className="text-xs md:text-sm mt-2 relative leading-snug" style={{color:'var(--ink-2)'}}>
+                        {isBalanced
+                          ? `הכל חזק ומאוזן — הצעד הבא הוא ביצוע.`
+                          : isTop
+                            ? `נקודת החוזק שלך — ${p.label} הוא הבסיס שתבנה עליו.`
+                            : `השקעה ממוקדת כאן תקפיץ את המוכנות הכוללת שלך.`}
+                      </div>
+                    </div>
+                  );
+                };
+                if (allEqual) {
+                  return (
+                    <div className="md:col-span-2">
+                      {mkCard(top[0],top[1],'balanced')}
+                    </div>
+                  );
+                }
+                return <>{mkCard(top[0],top[1],'top')}{showLow && mkCard(low[0],low[1],'low')}</>;
+              })()}
+              {(()=>{
+                let bonusInfo = null;
+                if(bonus != null) bonusInfo = BONUS.options[bonus];
+                else if(urlResults?.bonusTag){
+                  bonusInfo = BONUS.options.find(o => o.tag === urlResults.bonusTag);
+                }
+                if(!bonusInfo) return null;
+                return (
+                  <div className="md:col-span-2 rounded-2xl p-5" style={{background:'#faf4e4',border:`1px solid ${bonusInfo.resultColor}55`,borderRight:`6px solid ${bonusInfo.resultColor}`,boxShadow:'0 4px 14px rgba(43,49,60,.06)'}}>
+                    <div className="flex items-center gap-3 mb-3">
+                      <div style={{width:54,height:54,borderRadius:'16px',background:`${bonusInfo.resultColor}15`,border:`2px solid ${bonusInfo.resultColor}30`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>{bonusInfo.icon}</div>
+                      <div className="min-w-0">
+                        <div className="text-xs font-bold mb-0.5" style={{color:bonusInfo.resultColor,letterSpacing:'.5px'}}>האבחנה שלך · {bonusInfo.tag}</div>
+                        <div className="font-extrabold ink text-lg md:text-xl leading-tight">{bonusInfo.resultTitle}</div>
+                      </div>
+                    </div>
+                    <div className="text-sm leading-relaxed" style={{color:'var(--ink-2)'}}>{bonusInfo.resultSub}</div>
+                  </div>
+                );
+              })()}
+            </div>
+
+            {/* CTA — qualified WhatsApp intro (moved up) */}
+            <div className="rounded-2xl p-7 md:p-10 mb-6" style={{background:'var(--ink)',color:'#fff'}}>
+              <div className="text-center mb-6">
+                <div className="text-xs font-bold mb-2" style={{letterSpacing:'.5px',color:'#d9c29a'}}>הצעד הבא שלך</div>
+                <h3 className="text-2xl md:text-3xl font-extrabold leading-tight">רוצה לדבר על התוצאות?</h3>
+              </div>
+              <div className="max-w-lg mx-auto rounded-xl p-5 mb-6" style={{background:'rgba(255,255,255,.06)',border:'1px solid rgba(217,194,154,.2)'}}>
+                <div className="text-sm font-bold mb-3" style={{color:'#d9c29a'}}>השיחה רלוונטית אם:</div>
+                <ul className="space-y-2" style={{listStyle:'none',padding:0}}>
+                  <li className="flex items-start gap-3 text-sm"><span style={{color:'#d9c29a',fontWeight:900,flexShrink:0}}>◆</span><span style={{color:'rgba(255,255,255,.92)'}}>אתה שוקל ברצינות לרכוש נכס בתוך 12 חודשים</span></li>
+                  <li className="flex items-start gap-3 text-sm"><span style={{color:'#d9c29a',fontWeight:900,flexShrink:0}}>◆</span><span style={{color:'rgba(255,255,255,.92)'}}>יש לך הון של 200K+ ש"ח זמין להשקעה</span></li>
+                  <li className="flex items-start gap-3 text-sm"><span style={{color:'#d9c29a',fontWeight:900,flexShrink:0}}>◆</span><span style={{color:'rgba(255,255,255,.92)'}}>אתה יודע להחליט — ומבין שללמוד מניסיון של אחרים שווה זהב</span></li>
+                </ul>
+              </div>
+              <div className="flex flex-col items-center">
+                <a href={waLink(lead, tier.label, totalScore)}
+                  target="_blank" rel="noopener"
+                  className="cta-cream font-extrabold px-8 py-4 rounded-xl flex items-center justify-center gap-2 whitespace-nowrap text-lg">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                  אני עונה על הקריטריונים ←
+                </a>
+                <div className="text-xs mt-3 max-w-md text-center leading-relaxed" style={{color:'rgba(255,255,255,.55)'}}>למטה מחכה לך סרטון אישי, מסע 5 השלבים וקישורים נוספים</div>
+              </div>
+            </div>
+
+            {/* YouTube video */}
+            <div className="surface rounded-2xl p-6 mb-6">
+              <div className="text-xs muted font-semibold mb-1">מסר אישי מתומר</div>
+              <h3 className="text-xl font-bold ink mb-4">מה לעשות עכשיו עם התוצאות שלך</h3>
+              {CONFIG.youtubeId ? (
+                <>
+                  <div style={{position:'relative',paddingBottom:'56.25%',height:0,overflow:'hidden',borderRadius:12}}>
+                    <iframe src={`https://www.youtube.com/embed/${CONFIG.youtubeId}?rel=0&modestbranding=1&playsinline=1${CONFIG.youtubeStart?`&start=${CONFIG.youtubeStart}`:''}`}
+                      title="Kamir Group" frameBorder="0"
+                      style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',border:0}}
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen></iframe>
+                  </div>
+                  <a href={`https://www.youtube.com/watch?v=${CONFIG.youtubeId}${CONFIG.youtubeStart?`&t=${CONFIG.youtubeStart}s`:''}`}
+                     target="_blank" rel="noopener"
+                     className="block text-center text-xs muted mt-3 hover:text-black underline">
+                    לא רואה את הסרטון? פתח ביוטיוב ←
+                  </a>
+                </>
+              ) : (
+                <div className="flex flex-col items-center justify-center rounded-xl text-center"
+                  style={{aspectRatio:'16/9',background:'rgba(43,49,60,.06)',border:'2px dashed rgba(43,49,60,.15)'}}>
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor" style={{color:'var(--muted)',marginBottom:8}}>
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  </svg>
+                  <div className="text-sm muted">כאן יוצב הסרטון – הוסף מזהה ב-<code>CONFIG.youtubeId</code></div>
+                </div>
+              )}
+            </div>
+
+            {/* Journey roadmap */}
+            <div className="surface rounded-2xl p-6 mb-6">
+              <div className="text-xs muted font-semibold mb-1 text-center">המסע שלך מכאן</div>
+              <h3 className="text-xl font-bold ink mb-5 text-center">5 השלבים לנכס הראשון שלך</h3>
+              <div className="flex flex-col md:flex-row flex-wrap gap-2 items-stretch justify-center">
+                <div className="step-card done" style={{flex:'1 1 160px',minWidth:140}}>
+                  <div className="step-num">✓</div>
+                  <div className="step-time">היום</div>
+                  <div className="font-bold" style={{fontSize:14}}>אבחון אישי</div>
+                  <div className="text-xs mt-1" style={{opacity:.75}}>מיפוי הון עצמי, יעדים וניתוח פערים</div>
+                </div>
+                <div className="step-arrow hidden md:flex" style={{flex:'0 0 14px'}}>←</div>
+                <div className="step-card active" style={{flex:'1 1 160px',minWidth:140}}>
+                  <div className="step-num">2</div>
+                  <div className="step-time">אתה כאן</div>
+                  <div className="font-bold" style={{fontSize:14}}>שיחת אסטרטגיה</div>
+                  <div className="text-xs mt-1" style={{opacity:.8}}>תכנון מפת דרכים אישית ובניית תוכנית פעולה</div>
+                </div>
+                <div className="step-arrow hidden md:flex" style={{flex:'0 0 14px'}}>←</div>
+                <div className="step-card" style={{flex:'1 1 160px',minWidth:140}}>
+                  <div className="step-num">3</div>
+                  <div className="step-time">14-30 יום</div>
+                  <div className="font-bold ink" style={{fontSize:14}}>הקמת תשתית</div>
+                  <div className="text-xs muted mt-1">פתיחת LLC, חשבון בנק ואיתור אזורי ביקוש</div>
+                </div>
+                <div className="step-arrow hidden md:flex" style={{flex:'0 0 14px'}}>←</div>
+                <div className="step-card" style={{flex:'1 1 160px',minWidth:140}}>
+                  <div className="step-num">4</div>
+                  <div className="step-time">30-60 יום</div>
+                  <div className="font-bold ink" style={{fontSize:14}}>איתור וניתוח</div>
+                  <div className="text-xs muted mt-1">סינון עסקאות וביצוע בדיקות נאותות</div>
+                </div>
+                <div className="step-arrow hidden md:flex" style={{flex:'0 0 14px'}}>←</div>
+                <div className="step-card" style={{flex:'1 1 160px',minWidth:140}}>
+                  <div className="step-num">5</div>
+                  <div className="step-time">90+ יום</div>
+                  <div className="font-bold ink" style={{fontSize:14}}>סגירה וניהול</div>
+                  <div className="text-xs muted mt-1">רכישת הנכס, שיפוץ/השכרה וצ׳ק ראשון</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Second CTA — softer, near the end */}
+            <div className="rounded-2xl p-6 md:p-8 mb-6" style={{background:'var(--ink)',color:'#fff'}}>
+              <div className="text-center mb-4">
+                <h3 className="text-xl md:text-2xl font-extrabold leading-tight mb-1">מוכן לעשות את הצעד הבא?</h3>
+                <p className="text-sm" style={{color:'rgba(255,255,255,.65)'}}>אם אתה עומד בקריטריונים שתוארו למעלה — בוא נדבר.</p>
+              </div>
+              <div className="flex justify-center">
+                <a href={waLink(lead, tier.label, totalScore)}
+                  target="_blank" rel="noopener"
+                  className="cta-cream font-extrabold px-7 py-3 rounded-xl flex items-center justify-center gap-2 whitespace-nowrap">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                  לתאם שיחת אסטרטגיה ←
+                </a>
+              </div>
+            </div>
+
+            {/* Social links */}
+            {(CONFIG.youtubeChannel || CONFIG.instagram) && (
+              <div className="mt-8 text-center">
+                <div className="text-xs muted font-semibold mb-3">תמשיכו להתעדכן</div>
+                <div className="flex flex-wrap justify-center gap-3">
+                  {CONFIG.youtubeChannel && (
+                    <a href={CONFIG.youtubeChannel} target="_blank" rel="noopener" className="social-link">
+                      <svg width="22" height="22" viewBox="0 0 24 24">
+                        <path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/>
+                        <path fill="#ffffff" d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                      </svg>
+                      ערוץ היוטיוב
+                    </a>
+                  )}
+                  {CONFIG.instagram && (
+                    <a href={CONFIG.instagram} target="_blank" rel="noopener" className="social-link">
+                      <svg width="22" height="22" viewBox="0 0 24 24">
+                        <defs>
+                          <radialGradient id="igGrad" cx="30%" cy="107%" r="150%">
+                            <stop offset="0%" stopColor="#fdf497"/>
+                            <stop offset="5%" stopColor="#fdf497"/>
+                            <stop offset="45%" stopColor="#fd5949"/>
+                            <stop offset="60%" stopColor="#d6249f"/>
+                            <stop offset="90%" stopColor="#285AEB"/>
+                          </radialGradient>
+                        </defs>
+                        <rect x="2" y="2" width="20" height="20" rx="5.5" ry="5.5" fill="url(#igGrad)"/>
+                        <circle cx="12" cy="12" r="4" fill="none" stroke="#ffffff" strokeWidth="1.8"/>
+                        <circle cx="17.6" cy="6.4" r="1.1" fill="#ffffff"/>
+                      </svg>
+                      אינסטגרם
+                    </a>
+                  )}
+                </div>
+              </div>
+            )}
+
+            <button onClick={()=>{setScreen('landing');setIdx(0);setAnswers({});setBonus(null);setSent(false);}}
+              className="mt-6 muted hover:text-black text-sm">← התחל שאלון מחדש</button>
+            <p className="mt-4 text-xs muted text-center">
+              <button onClick={()=>setLegalModal('privacy')} className="underline" style={{color:'var(--ink-2)',background:'none',border:'none',cursor:'pointer',padding:0,fontWeight:600}}>מדיניות פרטיות</button>
+              {' · '}
+              <button onClick={()=>setLegalModal('access')} className="underline" style={{color:'var(--ink-2)',background:'none',border:'none',cursor:'pointer',padding:0,fontWeight:600}}>הצהרת נגישות</button>
+            </p>
+          </div>
+        </div>
+        <LegalModal/>
+      </div>
+    );
+  }
+
+  /* ---------- QUIZ ---------- */
+  const q = QUESTIONS[idx];
+  const p = PILLARS[q.pillar];
+  const selected = answers[idx];
+
+  const minutesLeft = Math.max(1, Math.ceil((total - idx) * 16 / 60));
+  const progressRatio = (idx+1) / total;
+  const eased = Math.pow(progressRatio, 2.2);
+  const progressColor = `hsl(${Math.round(32 + (155 - 32) * eased)}, ${Math.round(55 - 15*eased)}%, ${Math.round(48 - 8*eased)}%)`;
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Celebration/>
+      <header className="p-5 md:p-8"><Logo/></header>
+      <div className="flex-1 flex items-center justify-center p-6">
+        <div className="max-w-2xl w-full">
+          <div className="flex items-center justify-between mb-3 text-sm">
+            <span className="muted text-xs">כ-{minutesLeft} דק׳ נותרו</span>
+            <span className="font-extrabold text-base" style={{color:progressColor,transition:'color .5s ease'}}>{idx+1}/{total}</span>
+          </div>
+          <div className="progress-bar mb-8"><div style={{width:`${((idx)/total)*100}%`,background:progressColor,transition:'width .5s ease,background .5s ease'}}></div></div>
+
+          <div key={idx} className="fade-in">
+            <div className="q-badge" style={{background:`${p.color}30`,border:`1px solid ${p.color}66`}}>
+              <div className="q-badge-icon" style={{background:p.color}}>{PILLAR_ICONS[q.pillar]}</div>
+              <div>
+                <div className="font-bold ink text-sm leading-tight">{p.label}</div>
+                <div className="text-xs muted leading-tight">{p.sub}</div>
+              </div>
+            </div>
+            {q.titleHtml
+              ? <h2 className="font-bold mb-6 leading-snug ink" style={{fontSize:'clamp(1.45rem, 5.2vw, 1.875rem)'}} dangerouslySetInnerHTML={{__html:q.titleHtml}}/>
+              : <h2 className="font-bold mb-6 leading-snug ink" style={{fontSize:'clamp(1.45rem, 5.2vw, 1.875rem)'}}>{q.title}</h2>}
+            {q.type === 'yesno' ? (
+              <div className="yn-row">
+                {q.options.map((o,i)=>{
+                  const isYes = o.text === 'כן';
+                  return (
+                    <button key={i} onClick={()=>pick(i)}
+                      className={`yn-btn ${isYes?'yn-yes':'yn-no'} ${selected===i?'selected':''}`}>
+                      <span className="yn-glow"></span>
+                      <div className="yn-icon">{isYes ? '✓' : '✕'}</div>
+                      <div className="yn-text">{o.text}</div>
+                    </button>
+                  );
+                })}
+              </div>
+            ) : q.type === 'scale' ? (
+              <div className="scale-wrap">
+                <div className="scale-row">
+                  {q.options.map((o,i)=>{
+                    const ratio = i / (q.options.length - 1);
+                    const hue = 150 - ratio * 140;
+                    const bg = selected===i ? `hsl(${hue},55%,45%)` : `hsl(${hue},55%,88%)`;
+                    const fg = selected===i ? '#fff' : 'var(--ink)';
+                    return (
+                      <button key={i} onClick={()=>pick(i)}
+                        className={`scale-btn ${selected===i?'selected':''}`}
+                        style={{background:bg,color:fg}}>{o.text}</button>
+                    );
+                  })}
+                </div>
+                <div className="scale-anchor-row">
+                  <span className="scale-anchor">{q.scaleLow}</span>
+                  <span className="scale-anchor filler" style={{flex:8}}></span>
+                  <span className="scale-anchor">{q.scaleHigh}</span>
+                </div>
+                {selected != null && (
+                  <div className="scale-feedback">
+                    {selected <= 2 ? '✓ אתה יציב מול דעות חיצוניות' :
+                     selected <= 5 ? 'דעות חיצוניות משפיעות עליך במידה מסוימת' :
+                     selected <= 7 ? 'דעות חיצוניות יכולות לערער החלטה' :
+                     'דעות חיצוניות משפיעות עליך חזק'}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {q.options.map((o,i)=>(
+                  <button key={i} onClick={()=>pick(i)}
+                    className={`option-card w-full text-right rounded-xl p-4 ${selected===i?'selected':''}`}
+                    style={selected===i?{borderColor:p.color,boxShadow:`0 0 0 2px ${p.color}55`}:{}}>
+                    {o.html
+                      ? <div className="font-semibold ink" dangerouslySetInnerHTML={{__html:o.html}}/>
+                      : <div className="font-semibold ink">{o.text}</div>}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="flex justify-start mt-8 text-sm">
+            <button disabled={idx===0} onClick={()=>setIdx(idx-1)}
+              className="muted hover:text-black disabled:opacity-30">← שאלה קודמת</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
