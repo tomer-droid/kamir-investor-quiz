@@ -123,9 +123,14 @@
   @keyframes toastOut{to{opacity:0;transform:translate(-50%,-8px);}}
   .toast-check{width:26px;height:26px;border-radius:999px;background:#1f5a4e;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;flex-shrink:0;}
   /* Accessibility widget */
-  .a11y-fab{position:fixed;bottom:18px;left:18px;width:54px;height:54px;border-radius:50%;background:#1f5a4e;color:#fff;border:3px solid #fff;box-shadow:0 8px 24px rgba(43,49,60,.28);cursor:pointer;z-index:60;display:flex;align-items:center;justify-content:center;font-size:26px;transition:transform .2s ease, background .2s ease;}
+  .a11y-fab-wrap{position:fixed;bottom:18px;left:18px;display:flex;align-items:center;gap:6px;z-index:60;transition:transform .35s cubic-bezier(.2,.8,.2,1);}
+  .a11y-fab-wrap.tucked{transform:translateX(calc(-100% + 22px));}
+  .a11y-fab{width:54px;height:54px;border-radius:50%;background:#1f5a4e;color:#fff;border:3px solid #fff;box-shadow:0 8px 24px rgba(43,49,60,.28);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:26px;transition:transform .2s ease, background .2s ease;flex-shrink:0;}
   .a11y-fab:hover{transform:scale(1.08);background:#2d7a5f;}
   .a11y-fab:focus{outline:3px solid #ffd966;outline-offset:2px;}
+  .a11y-tuck{width:22px;height:44px;background:#1f5a4e;color:#fff;border:none;border-radius:0 10px 10px 0;cursor:pointer;font-size:14px;font-weight:900;box-shadow:0 4px 10px rgba(43,49,60,.2);flex-shrink:0;display:flex;align-items:center;justify-content:center;line-height:1;padding:0;}
+  .a11y-tuck:hover{background:#2d7a5f;}
+  .a11y-fab-wrap.tucked .a11y-tuck{border-radius:0 10px 10px 0;}
   .a11y-panel{position:fixed;bottom:80px;left:18px;width:280px;max-width:calc(100vw - 36px);background:var(--surface);border:1px solid rgba(43,49,60,.12);border-radius:16px;box-shadow:0 18px 48px rgba(43,49,60,.22);z-index:60;padding:14px;animation:fade .22s ease;}
   .a11y-panel h3{font-size:14px;font-weight:800;margin-bottom:10px;color:var(--ink);display:flex;align-items:center;justify-content:space-between;}
   .a11y-panel .close-btn{background:rgba(43,49,60,.08);border:none;width:24px;height:24px;border-radius:50%;cursor:pointer;font-weight:900;color:var(--ink);}
@@ -219,7 +224,10 @@
 <div id="root"></div>
 
 <!-- Accessibility widget (always available) -->
-<button id="a11yBtn" class="a11y-fab" aria-label="פתיחת תפריט נגישות" aria-haspopup="dialog" aria-expanded="false">♿</button>
+<div id="a11yWrap" class="a11y-fab-wrap">
+  <button id="a11yBtn" class="a11y-fab" aria-label="פתיחת תפריט נגישות" aria-haspopup="dialog" aria-expanded="false">♿</button>
+  <button id="a11yTuck" class="a11y-tuck" aria-label="הסתרת כפתור הנגישות לצד" title="הסתר/הצג">‹</button>
+</div>
 <div id="a11yPanel" class="a11y-panel" role="dialog" aria-label="תפריט נגישות" style="display:none">
   <h3>תפריט נגישות
     <button class="close-btn" id="a11yClose" aria-label="סגירה">✕</button>
@@ -287,6 +295,23 @@
     b.addEventListener('click', function(){ toggleHandler(b.getAttribute('data-toggle')); });
   });
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape') shut(); });
+
+  // Tuck/untuck the widget to the side
+  var wrap = document.getElementById('a11yWrap');
+  var tuck = document.getElementById('a11yTuck');
+  var TUCK_KEY = 'a11y_tucked_v1';
+  function setTucked(t){
+    wrap.classList.toggle('tucked', t);
+    tuck.textContent = t ? '›' : '‹';
+    tuck.setAttribute('aria-label', t ? 'הצגת כפתור הנגישות' : 'הסתרת כפתור הנגישות לצד');
+    localStorage.setItem(TUCK_KEY, t ? '1' : '0');
+    if(t) shut();
+  }
+  setTucked(localStorage.getItem(TUCK_KEY) === '1');
+  tuck.addEventListener('click', function(e){
+    e.stopPropagation();
+    setTucked(!wrap.classList.contains('tucked'));
+  });
 
   apply();
 })();
