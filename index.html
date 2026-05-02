@@ -79,6 +79,15 @@
     .surface.rounded-3xl{padding:18px !important;}
     .results-bg .pillar-info-inline{padding:12px 14px;}
     .axis-card{padding:12px 14px !important;}
+    /* Compact journey on mobile — 2-column grid, last card spans both */
+    .journey-row{
+      display:grid !important;
+      grid-template-columns:1fr 1fr !important;
+      gap:6px !important;
+      flex-wrap:initial !important;
+    }
+    .journey-row > .step-card{flex:initial !important;min-width:0 !important;}
+    .journey-row > .step-card:last-child{grid-column:1 / -1;}
     /* Compact journey on mobile — minimal height per step */
     .step-card{
       padding:6px 10px !important;
@@ -1236,7 +1245,7 @@ function App(){
             <div className="surface rounded-2xl p-6 mb-6">
               <div className="text-xs muted font-semibold mb-1 text-center">המסע שלך מכאן</div>
               <h3 className="text-xl font-bold ink mb-5 text-center">5 השלבים לנכס הראשון שלך</h3>
-              <div className="flex flex-col md:flex-row flex-wrap gap-2 items-stretch justify-center">
+              <div className="journey-row flex flex-col md:flex-row flex-wrap gap-2 items-stretch justify-center">
                 <div className="step-card done" style={{flex:'1 1 160px',minWidth:140}}>
                   <div className="step-num">✓</div>
                   <div className="step-time">היום</div>
