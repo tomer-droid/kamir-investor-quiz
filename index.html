@@ -200,6 +200,17 @@
   .radar-wrap svg{overflow:visible;}
   .radar-vertex{cursor:pointer;transition:r .2s ease, filter .25s ease;}
   .radar-vertex:hover{filter:brightness(1.15) drop-shadow(0 0 10px currentColor);}
+  /* YouTube card — full-bleed on mobile for bigger video */
+  @media(max-width:640px){
+    .yt-featured{
+      margin-left:-18px !important;
+      margin-right:-18px !important;
+      padding:14px 12px !important;
+      border-radius:0 !important;
+      border-left:none !important;
+      border-right:none !important;
+    }
+  }
   /* Mobile scroll hint — appears after delay, sits in corner */
   .scroll-hint{position:fixed;bottom:90px;right:16px;background:var(--ink);color:#fff;padding:7px 14px;border-radius:999px;font-size:11px;font-weight:800;z-index:55;pointer-events:none;box-shadow:0 6px 20px rgba(43,49,60,.35);display:none;letter-spacing:.3px;opacity:0;animation:scrollHintAppear .5s ease 3s forwards, scrollHintBounce 1.6s ease-in-out 3.5s infinite;}
   @media(max-width:640px){.scroll-hint{display:flex;align-items:center;gap:5px;}}
