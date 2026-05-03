@@ -580,7 +580,7 @@ const PILLAR_DESCRIPTIONS = {
   financial: 'היכולת הפיננסית שלך: הון נזיל להשקעה ורזרבה לאירועים בלתי צפויים. זה הבסיס.',
   mental:    'איך אתה מקבל החלטות תחת אי-ודאות: שמירה על קור רוח, עמידה בלחץ חיצוני וחדות בלי להיתקע בניתוחי-יתר. המנוע שיחזיק לאורך זמן.',
   perceptual:'מידת האמון שלך במודל של נדל"ן להשקעה, במיוחד מחוץ לישראל: תפיסת עולם, חוויית עבר ומה שקורה אצל אנשים סביבך. חוסר אמון = סיכוי גבוה ליציאה באמצע הדרך.',
-  personal:  'הסביבה והיעדים שלך: תמיכת המשפחה והסביבה. ההחלטה צריכה להתאים לחיים שלך — לא רק למספרים.',
+  personal:  'הסביבה והיעדים שלך. ההחלטה צריכה להתאים לחיים שלך — לא רק למספרים.',
 };
 
 function ScoreRing({value,size=220,stroke=14,color}){
@@ -996,7 +996,7 @@ function App(){
               <span style={{display:'inline-flex',alignItems:'center',gap:5,padding:'4px 12px',borderRadius:999,background:'rgba(31,90,78,.1)',color:'#1f5a4e',fontSize:12,fontWeight:700}}>✓ ללא ספאם</span>
               <span style={{display:'inline-flex',alignItems:'center',gap:5,padding:'4px 12px',borderRadius:999,background:'rgba(31,90,78,.1)',color:'#1f5a4e',fontSize:12,fontWeight:700}}>✓ ללא התחייבות</span>
             </div>
-            <p className="text-sm muted mb-3 max-w-2xl">השאלון בוחן אותך לפי 4 הפרמטרים שמחליטים אם הנכס הראשון יצליח. לחץ על i כדי לקרוא על כל פרמטר:</p>
+            <p className="text-sm muted mb-3 max-w-2xl">השאלון בוחן אותך לפי 4 פרמטרים מרכזיים:</p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-10">
               {Object.entries(PILLARS).map(([k,p])=>(
                 <div key={k} className="surface rounded-lg relative" style={{padding:'8px 10px'}}>
@@ -1041,18 +1041,23 @@ function App(){
           <div className="space-y-3">
             {BONUS.options.map((o,i)=>(
               <button key={i} onClick={()=>{setBonus(i);setScreen('gate');}}
-                className="option-card w-full text-right rounded-xl p-5 relative overflow-hidden"
-                style={{borderColor:o.btnColor,background:o.btnColor}}>
-                <div style={{position:'absolute',top:0,right:0,bottom:0,width:5,background:'rgba(43,49,60,.35)'}}></div>
-                <div className="flex items-start gap-3" style={{paddingRight:12}}>
-                  <div className="flex items-center justify-center flex-shrink-0" style={{width:38,height:38,borderRadius:'50%',background:'rgba(255,255,255,.5)',fontSize:20,marginTop:2}}>{o.icon}</div>
+                className="w-full text-right rounded-xl p-4 relative"
+                style={{background:'var(--surface)',border:`1.5px solid ${o.btnColor}`,borderRight:`5px solid ${o.btnColor}`,cursor:'pointer',transition:'transform .18s ease, box-shadow .18s ease'}}
+                onMouseEnter={e=>{e.currentTarget.style.transform='translateX(-3px)';e.currentTarget.style.boxShadow=`0 6px 18px ${o.btnColor}55`;}}
+                onMouseLeave={e=>{e.currentTarget.style.transform='translateX(0)';e.currentTarget.style.boxShadow='none';}}>
+                <div className="flex items-start gap-3">
+                  <div className="flex items-center justify-center flex-shrink-0" style={{width:38,height:38,borderRadius:'50%',background:`${o.btnColor}cc`,fontSize:20,marginTop:2}}>{o.icon}</div>
                   <div className="flex-1 min-w-0">
                     <div className="font-extrabold ink mb-1">{o.text}</div>
-                    <div className="text-sm leading-relaxed" style={{color:'#4a4638'}}>{o.sub}</div>
+                    <div className="text-sm leading-relaxed" style={{color:'var(--ink-2)'}}>{o.sub}</div>
                   </div>
                 </div>
               </button>
             ))}
+          </div>
+          <div className="flex justify-start mt-6 text-sm">
+            <button onClick={()=>setScreen('quiz')}
+              className="muted hover:text-black">→ שאלה קודמת</button>
           </div>
         </div>
       </div>
