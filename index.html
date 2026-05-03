@@ -888,36 +888,36 @@ function App(){
 
     if(totalScore >= 87){
       return { label:'מוכן לרכישה', color:'#1f5a4e',
-        desc:`הפרופיל שלך מאוזן וחזק בכל הפרמטרים — הצד החזק ביותר הוא ${strongest.short} (${strongest.v}/100). אתה מוכן לעבור משלב הבחינה לשלב הביצוע.` };
+        desc:'הפרופיל שלך מאוזן וחזק בכל הפרמטרים. אתה מוכן לעבור משלב הבחינה לשלב הביצוע.' };
     }
     if(totalScore >= 72){
       if(isOutlierWeak) return { label:'כמעט מוכן', color:'#5a7a3e',
-        desc:`הפרופיל שלך טוב כמעט בכל הפרמטרים — הצד ${strongest.short} שלך חזק במיוחד (${strongest.v}/100). הצד ${weakest.ofThe} (${weakest.v}/100) הוא מה שעוד מפריד אותך ממוכנות מלאה.` };
+        desc:`הפוקוס שלך כרגע: לחזק את הצד ${weakest.short}. שאר הפרמטרים שלך כבר במקום הנכון.` };
       if(strongAbove75.length >= 3) return { label:'כמעט מוכן', color:'#5a7a3e',
-        desc:`רוב הפרמטרים שלך כבר ברמה גבוהה. נשאר רק לסדר קצת את ${weakest.short} (${weakest.v}/100) כדי להגיע למוכנות מלאה.` };
+        desc:`רוב הפרמטרים שלך ברמה גבוהה. נשאר ליטוש קל ב${weakest.short} כדי להגיע למוכנות מלאה.` };
       return { label:'כמעט מוכן', color:'#5a7a3e',
-        desc:`התשתית שלך טובה — נקודת חוזק: ${strongest.short} (${strongest.v}). נקודה לחיזוק: ${weakest.short} (${weakest.v}). פוקוס שם יוביל אותך למוכנות מלאה.` };
+        desc:`התשתית שלך טובה. הפוקוס שלך עכשיו: לחזק את ${weakest.short}.` };
     }
     if(totalScore >= 60){
       if(isOutlierWeak) return { label:'באמצע הדרך', color:'#a58348',
-        desc:`יש לך נקודות חוזק טובות (${strongest.short} ${strongest.v}/100), אבל הצד ${weakest.ofThe} (${weakest.v}/100) הוא הפער המרכזי שכדאי לסגור לפני רכישה.` };
+        desc:`הפוקוס שלך כרגע: הצד ${weakest.short}. הוא הפער המרכזי בדרך לרכישה.` };
       if(weakBelow50.length >= 2) return { label:'באמצע הדרך', color:'#a58348',
-        desc:`הצדדים ${weakBelow50.slice(0,2).map(p=>p.short).join(' ו')} עדיין רחוקים מהרמה הנדרשת לרכישה. מצד שני, ${strongest.short} שלך טוב (${strongest.v}/100).` };
+        desc:`שני פרמטרים עדיין רחוקים מהמקום הנדרש: ${weakBelow50.slice(0,2).map(p=>p.short).join(' ו')}. כדאי להתחיל מהם.` };
       return { label:'באמצע הדרך', color:'#a58348',
-        desc:`יש לך בסיס יפה — במיוחד ב${strongest.short} (${strongest.v}/100). הפרמטר שכדאי לחזק עכשיו הוא ${weakest.short} (${weakest.v}/100).` };
+        desc:`יש לך בסיס טוב. הפוקוס לחיזוק עכשיו: ${weakest.short}.` };
     }
     if(totalScore >= 40){
       if(isOutlierWeak && strongest.v >= 65) return { label:'בונה בסיס', color:'#c17840',
-        desc:`יש לך נקודת חוזק יפה ב${strongest.short} (${strongest.v}/100), אבל הצד ${weakest.ofThe} (${weakest.v}/100) חלש משמעותית. ללא חיזוק שלו עדיין מוקדם לרכישה.` };
+        desc:`הפוקוס שלך כרגע: הצד ${weakest.short}. ללא חיזוק שלו עדיין מוקדם לרכישה.` };
       if(weakBelow50.length >= 3) return { label:'בונה בסיס', color:'#c17840',
-        desc:`${weakBelow50.length} מהפרמטרים שלך עדיין נמוכים — בעיקר ${weakBelow50.slice(0,2).map(p=>p.short).join(' ו')}. צריך לבנות בסיס לפני שמדברים על רכישה אמיתית.` };
+        desc:`${weakBelow50.length} פרמטרים עדיין נמוכים — בעיקר ${weakBelow50.slice(0,2).map(p=>p.short).join(' ו')}. כדאי להתחיל מהם.` };
       return { label:'בונה בסיס', color:'#c17840',
-        desc:`אתה בשלב חשוב של בנייה. ${strongest.short} כבר במקום (${strongest.v}/100), נשאר לחזק את ${weakest.short} (${weakest.v}/100) ופרמטרים נוספים.` };
+        desc:`אתה בשלב חשוב של בנייה. הפרמטר הראשון לחזק: ${weakest.short}.` };
     }
     if(strongest.v >= 50) return { label:'בתחילת המסע', color:'#b85c3e',
-      desc:`למרות שהציון הכולל נמוך, יש לך נקודת אור ב${strongest.short} (${strongest.v}/100). שאר הפרמטרים — במיוחד ${weakest.short} (${weakest.v}/100) — עדיין בהתחלה. צבירת ידע ובנייה הדרגתית יקרבו אותך.` };
+      desc:`יש לך נקודת אור ב${strongest.short}. שאר הפרמטרים — במיוחד ${weakest.short} — עדיין בהתחלה. צבירת ידע ובנייה הדרגתית יקרבו אותך.` };
     return { label:'בתחילת המסע', color:'#b85c3e',
-      desc:'אתה בתחילת המסע — וזו נקודת זינוק טובה. השלב הבא שלך הוא לצבור ידע על השוק, לבנות בסיס פיננסי ולחזק את כל הפרמטרים בהדרגה.' };
+      desc:'אתה בתחילת המסע — וזו נקודת זינוק טובה. השלב הבא שלך הוא לצבור ידע ולבנות בסיס פיננסי.' };
   },[totalScore, pillarScores]);
 
   const Celebration = () => celebrating ? (
