@@ -1401,35 +1401,35 @@ function App(){
       <header className="p-5 md:p-8"><Logo/></header>
       <div className="flex-1 flex items-center justify-center p-6">
         <div className="max-w-2xl w-full">
-          <div className="flex items-center justify-between mb-2 text-sm">
-            <span className="muted text-xs">{idx >= total-3 ? `🎉 כמעט סיימת — נשארו ${total-idx} שאלות` : `כ-${minutesLeft} דק׳ נותרו`}</span>
-            <span className="font-extrabold text-base" style={{color:progressColor,transition:'color .5s ease'}}>{idx+1}/{total}</span>
-          </div>
-          {/* Per-pillar progress dots — in question order, above the bar */}
-          <div className="flex items-center justify-center gap-2.5 mb-2 flex-wrap">
-            {(()=>{
-              const counts = {};
-              const totals = {};
-              const order = [];
-              QUESTIONS.forEach((qq, i)=>{
-                if(!order.includes(qq.pillar)) order.push(qq.pillar);
-                totals[qq.pillar] = (totals[qq.pillar]||0) + 1;
-                if(answers[i] != null) counts[qq.pillar] = (counts[qq.pillar]||0) + 1;
-              });
-              return order.map(k=>{
-                const pp = PILLARS[k];
-                const done = counts[k] || 0;
-                const tot = totals[k] || 0;
-                const filled = done >= tot;
-                const isCurrent = q.pillar === k;
-                return (
-                  <div key={k} className="flex items-center gap-1" style={{opacity: isCurrent || filled ? 1 : .5}}>
-                    <span style={{width:7,height:7,borderRadius:'50%',background: filled ? pp.color : 'transparent',border:`2px solid ${pp.color}`,boxShadow: isCurrent ? `0 0 0 3px ${pp.color}33` : 'none',transition:'all .3s ease',display:'inline-block'}}></span>
-                    <span className="text-xs font-bold" style={{color: filled || isCurrent ? 'var(--ink)' : 'var(--muted)',fontSize:'10.5px'}}>{done}/{tot}</span>
-                  </div>
-                );
-              });
-            })()}
+          <div className="flex items-center justify-between gap-2 mb-2 text-sm">
+            <span className="muted text-xs flex-shrink-0">{idx >= total-3 ? `🎉 נשארו ${total-idx}` : `כ-${minutesLeft} דק׳`}</span>
+            {/* Per-pillar progress dots — in question order, centered between minutes and counter */}
+            <div className="flex items-center justify-center gap-2 flex-wrap flex-1">
+              {(()=>{
+                const counts = {};
+                const totals = {};
+                const order = [];
+                QUESTIONS.forEach((qq, i)=>{
+                  if(!order.includes(qq.pillar)) order.push(qq.pillar);
+                  totals[qq.pillar] = (totals[qq.pillar]||0) + 1;
+                  if(answers[i] != null) counts[qq.pillar] = (counts[qq.pillar]||0) + 1;
+                });
+                return order.map(k=>{
+                  const pp = PILLARS[k];
+                  const done = counts[k] || 0;
+                  const tot = totals[k] || 0;
+                  const filled = done >= tot;
+                  const isCurrent = q.pillar === k;
+                  return (
+                    <div key={k} className="flex items-center gap-1" style={{opacity: isCurrent || filled ? 1 : .5}}>
+                      <span style={{width:7,height:7,borderRadius:'50%',background: filled ? pp.color : 'transparent',border:`2px solid ${pp.color}`,boxShadow: isCurrent ? `0 0 0 3px ${pp.color}33` : 'none',transition:'all .3s ease',display:'inline-block'}}></span>
+                      <span className="text-xs font-bold" style={{color: filled || isCurrent ? 'var(--ink)' : 'var(--muted)',fontSize:'10px'}}>{done}/{tot}</span>
+                    </div>
+                  );
+                });
+              })()}
+            </div>
+            <span className="font-extrabold text-base flex-shrink-0" style={{color:progressColor,transition:'color .5s ease'}}>{idx+1}/{total}</span>
           </div>
           <div className="progress-bar mb-6"><div style={{width:`${((idx)/total)*100}%`,background:progressColor,transition:'width .5s ease,background .5s ease'}}></div></div>
 
@@ -1504,7 +1504,7 @@ function App(){
 
           <div className="flex justify-start mt-8 text-sm">
             <button disabled={idx===0} onClick={()=>setIdx(idx-1)}
-              className="muted hover:text-black disabled:opacity-30">← שאלה קודמת</button>
+              className="muted hover:text-black disabled:opacity-30">→ שאלה קודמת</button>
           </div>
         </div>
       </div>
