@@ -881,36 +881,36 @@ function App(){
     const strongAbove75 = desc.filter(p=>p.v>=75);
 
     if(totalScore >= 87){
-      return { label:'לתאם שיחת אסטרטגיה לרכישה', color:'#1f5a4e',
+      return { label:'מוכן לרכישה', color:'#1f5a4e',
         desc:`הפרופיל שלך מאוזן וחזק בכל הפרמטרים — הצד החזק ביותר הוא ${strongest.short} (${strongest.v}/100). אתה מוכן לעבור משלב הבחינה לשלב הביצוע.` };
     }
     if(totalScore >= 72){
-      if(isOutlierWeak) return { label:`לחזק את הצד ${weakest.short}`, color:'#5a7a3e',
+      if(isOutlierWeak) return { label:'כמעט מוכן', color:'#5a7a3e',
         desc:`הפרופיל שלך טוב כמעט בכל הפרמטרים — הצד ${strongest.short} שלך חזק במיוחד (${strongest.v}/100). הצד ${weakest.ofThe} (${weakest.v}/100) הוא מה שעוד מפריד אותך ממוכנות מלאה.` };
-      if(strongAbove75.length >= 3) return { label:'ליטוש קל לפני רכישה', color:'#5a7a3e',
+      if(strongAbove75.length >= 3) return { label:'כמעט מוכן', color:'#5a7a3e',
         desc:`רוב הפרמטרים שלך כבר ברמה גבוהה. נשאר רק לסדר קצת את ${weakest.short} (${weakest.v}/100) כדי להגיע למוכנות מלאה.` };
-      return { label:'לחזק פרמטרים שעוד לא מאוזנים', color:'#5a7a3e',
+      return { label:'כמעט מוכן', color:'#5a7a3e',
         desc:`התשתית שלך טובה — נקודת חוזק: ${strongest.short} (${strongest.v}). נקודה לחיזוק: ${weakest.short} (${weakest.v}). פוקוס שם יוביל אותך למוכנות מלאה.` };
     }
     if(totalScore >= 60){
-      if(isOutlierWeak) return { label:`הצד ${weakest.short} מושך את הציון מטה`, color:'#a58348',
+      if(isOutlierWeak) return { label:'באמצע הדרך', color:'#a58348',
         desc:`יש לך נקודות חוזק טובות (${strongest.short} ${strongest.v}/100), אבל הצד ${weakest.ofThe} (${weakest.v}/100) הוא הפער המרכזי שכדאי לסגור לפני רכישה.` };
-      if(weakBelow50.length >= 2) return { label:'יש 2 פרמטרים שדורשים חיזוק', color:'#a58348',
+      if(weakBelow50.length >= 2) return { label:'באמצע הדרך', color:'#a58348',
         desc:`הצדדים ${weakBelow50.slice(0,2).map(p=>p.short).join(' ו')} עדיין רחוקים מהרמה הנדרשת לרכישה. מצד שני, ${strongest.short} שלך טוב (${strongest.v}/100).` };
-      return { label:'לחזק 1-2 פרמטרים לפני רכישה', color:'#a58348',
+      return { label:'באמצע הדרך', color:'#a58348',
         desc:`יש לך בסיס יפה — במיוחד ב${strongest.short} (${strongest.v}/100). הפרמטר שכדאי לחזק עכשיו הוא ${weakest.short} (${weakest.v}/100).` };
     }
     if(totalScore >= 40){
-      if(isOutlierWeak && strongest.v >= 65) return { label:`הצד ${weakest.short} הוא הפער המרכזי`, color:'#c17840',
+      if(isOutlierWeak && strongest.v >= 65) return { label:'בונה בסיס', color:'#c17840',
         desc:`יש לך נקודת חוזק יפה ב${strongest.short} (${strongest.v}/100), אבל הצד ${weakest.ofThe} (${weakest.v}/100) חלש משמעותית. ללא חיזוק שלו עדיין מוקדם לרכישה.` };
-      if(weakBelow50.length >= 3) return { label:'פערים מהותיים בכמה פרמטרים', color:'#c17840',
+      if(weakBelow50.length >= 3) return { label:'בונה בסיס', color:'#c17840',
         desc:`${weakBelow50.length} מהפרמטרים שלך עדיין נמוכים — בעיקר ${weakBelow50.slice(0,2).map(p=>p.short).join(' ו')}. צריך לבנות בסיס לפני שמדברים על רכישה אמיתית.` };
-      return { label:'להמשיך לבנות את הבסיס', color:'#c17840',
+      return { label:'בונה בסיס', color:'#c17840',
         desc:`אתה בשלב חשוב של בנייה. ${strongest.short} כבר במקום (${strongest.v}/100), נשאר לחזק את ${weakest.short} (${weakest.v}/100) ופרמטרים נוספים.` };
     }
-    if(strongest.v >= 50) return { label:'יש נקודת אור — נשאר לבנות סביבה', color:'#b85c3e',
+    if(strongest.v >= 50) return { label:'בתחילת המסע', color:'#b85c3e',
       desc:`למרות שהציון הכולל נמוך, יש לך נקודת אור ב${strongest.short} (${strongest.v}/100). שאר הפרמטרים — במיוחד ${weakest.short} (${weakest.v}/100) — עדיין בהתחלה. צבירת ידע ובנייה הדרגתית יקרבו אותך.` };
-    return { label:'ללמוד את התחום ולבנות בסיס', color:'#b85c3e',
+    return { label:'בתחילת המסע', color:'#b85c3e',
       desc:'אתה בתחילת המסע — וזו נקודת זינוק טובה. השלב הבא שלך הוא לצבור ידע על השוק, לבנות בסיס פיננסי ולחזק את כל הפרמטרים בהדרגה.' };
   },[totalScore, pillarScores]);
 
@@ -1258,7 +1258,7 @@ function App(){
                         </div>
                       );
                     })()}
-                    <div className="text-xs font-bold mb-1" style={{color:tier.color, letterSpacing:'.4px'}}>↓ המהלך הבא שלך</div>
+                    <div className="text-xs font-bold mb-1" style={{color:tier.color, letterSpacing:'.4px'}}>↓ המצב שלך</div>
                     <div className="font-extrabold ink text-lg md:text-xl leading-tight mb-1">{tier.label}</div>
                     <div className="text-sm leading-relaxed" style={{color:'var(--ink-2)'}}>{tier.desc}</div>
                   </div>
@@ -1435,7 +1435,7 @@ function App(){
             {/* Social links */}
             {(CONFIG.youtubeChannel || CONFIG.instagram) && (
               <div className="mt-8 text-center">
-                <div className="text-xs muted font-semibold mb-3">מוזמנים להמשיך להתעדכן 👇</div>
+                <div className="font-extrabold ink mb-3" style={{fontSize:14}}>מוזמנים להמשיך להתעדכן 👇</div>
                 <div className="flex flex-wrap justify-center gap-3">
                   {CONFIG.instagram && (
                     <a href={CONFIG.instagram} target="_blank" rel="noopener" className="social-link">
@@ -1469,7 +1469,7 @@ function App(){
               </div>
             )}
 
-            <div className="mt-8 rounded-2xl p-5 md:p-6 text-center" style={{background:'linear-gradient(135deg, rgba(165,131,72,.08), rgba(165,131,72,.18))',border:'1.5px solid rgba(165,131,72,.30)',boxShadow:'0 4px 14px rgba(43,49,60,.05)'}}>
+            <div className="mt-8 rounded-2xl p-5 md:p-6 text-center" style={{background:'linear-gradient(135deg, rgba(165,131,72,.18), rgba(165,131,72,.32))',border:'1.5px solid rgba(165,131,72,.45)',boxShadow:'0 6px 18px rgba(43,49,60,.08)'}}>
               <div style={{fontSize:28,marginBottom:6}}>💡</div>
               <h4 className="font-extrabold ink mb-1" style={{fontSize:'17px'}}>אהבת את השאלון?</h4>
               <p className="text-sm muted mb-4">שתף עם חבר/ה ששוקל/ת השקעה בנדל"ן בארה"ב</p>
