@@ -1164,6 +1164,37 @@ function App(){
                 </div>
                 <div className="flex-1 w-full">
                   <div className="next-step-box mb-4" style={{borderRightColor:tier.color, background:`linear-gradient(135deg, ${tier.color}0F, ${tier.color}1F)`,borderColor:`${tier.color}30`}}>
+                    {/* Readiness scale */}
+                    {(()=>{
+                      const tiers = [
+                        {min:0,  label:'בתחילת המסע', emoji:'🌱', color:'#b85c3e'},
+                        {min:40, label:'בונה בסיס',     emoji:'🧱', color:'#c17840'},
+                        {min:60, label:'באמצע הדרך',    emoji:'🚧', color:'#a58348'},
+                        {min:72, label:'כמעט מוכן',     emoji:'⚡', color:'#5a7a3e'},
+                        {min:87, label:'מוכן לרכישה',  emoji:'🚀', color:'#1f5a4e'},
+                      ];
+                      let currentIdx = 0;
+                      for(let i=tiers.length-1; i>=0; i--){ if(totalScore >= tiers[i].min){ currentIdx = i; break; } }
+                      return (
+                        <div className="flex items-stretch gap-1 mb-3" style={{padding:'4px 0'}}>
+                          {tiers.map((t,i)=>{
+                            const isPast = i < currentIdx;
+                            const isCurrent = i === currentIdx;
+                            return (
+                              <React.Fragment key={i}>
+                                <div className="flex flex-col items-center gap-0.5" style={{flex:'1 1 0',minWidth:0}}>
+                                  <div style={{fontSize: isCurrent ? 22 : 14, opacity: isCurrent ? 1 : (isPast ? .85 : .3), transition:'all .3s ease', filter: isCurrent ? `drop-shadow(0 2px 6px ${t.color}66)` : 'none'}}>{t.emoji}</div>
+                                  <div style={{fontSize:9, fontWeight: isCurrent ? 900 : 600, color: isCurrent ? t.color : (isPast ? 'var(--ink-2)' : 'var(--muted)'), opacity: isCurrent ? 1 : (isPast ? .7 : .55), textAlign:'center', lineHeight:1.15, whiteSpace:'nowrap'}}>{t.label}</div>
+                                </div>
+                                {i < tiers.length-1 && (
+                                  <div style={{flex:'0 0 6px', alignSelf:'center', height:2, background: isPast ? t.color : 'rgba(43,49,60,.15)', borderRadius:2, marginTop:-12, transition:'background .3s ease'}}/>
+                                )}
+                              </React.Fragment>
+                            );
+                          })}
+                        </div>
+                      );
+                    })()}
                     <div className="text-xs font-bold mb-1" style={{color:tier.color, letterSpacing:'.4px'}}>↓ המהלך הבא שלך</div>
                     <div className="font-extrabold ink text-lg md:text-xl leading-tight mb-1">{tier.label}</div>
                     <div className="text-sm leading-relaxed" style={{color:'var(--ink-2)'}}>{tier.desc}</div>
