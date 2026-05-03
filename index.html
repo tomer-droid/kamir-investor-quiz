@@ -866,17 +866,53 @@ function App(){
   },[pillarScores,urlResults]);
 
   const tier = useMemo(()=>{
-    if(totalScore >= 87) return { label:'לתאם שיחת אסטרטגיה לרכישה', color:'#1f5a4e',
-      desc:'הפרופיל שלך מאוזן וחזק ברוב הפרמטרים. השלב הבא שלך הוא לעבור משלב הבחינה לשלב הביצוע.' };
-    if(totalScore >= 72) return { label:'לחזק פרמטרים שעוד לא מאוזנים', color:'#5a7a3e',
-      desc:'התשתית שלך טובה. חיזוק נקודתי בפרמטרים שעוד לא חזקים יוביל אותך למוכנות מלאה לפני רכישה.' };
-    if(totalScore >= 60) return { label:'לחזק כמה פרמטרים לפני רכישה', color:'#a58348',
-      desc:'יש לך בסיס טוב — במיוחד בחלק מהפרמטרים. כדאי לחזק את אלה שעוד לא במקום לפני שעוברים לרכישה בפועל.' };
-    if(totalScore >= 40) return { label:'להמשיך לבנות את הבסיס', color:'#c17840',
-      desc:'אתה בשלב חשוב של בנייה. חיזוק כמה מהפרמטרים יקרב אותך משמעותית למוכנות לרכישה.' };
+    const pillars = [
+      {k:'financial', short:'הכלכלי',  ofThe:'הכלכלי',  v:pillarScores.financial||0},
+      {k:'mental',    short:'המנטלי',  ofThe:'המנטלי',  v:pillarScores.mental||0},
+      {k:'perceptual',short:'התפיסתי', ofThe:'התפיסתי', v:pillarScores.perceptual||0},
+      {k:'personal',  short:'האישי',   ofThe:'האישי',   v:pillarScores.personal||0},
+    ];
+    const asc  = [...pillars].sort((a,b)=>a.v-b.v);
+    const desc = [...pillars].sort((a,b)=>b.v-a.v);
+    const weakest = asc[0], strongest = desc[0];
+    const top3Avg = (desc[0].v+desc[1].v+desc[2].v)/3;
+    const isOutlierWeak = (top3Avg - weakest.v) >= 22;
+    const weakBelow50 = asc.filter(p=>p.v<50);
+    const strongAbove75 = desc.filter(p=>p.v>=75);
+
+    if(totalScore >= 87){
+      return { label:'לתאם שיחת אסטרטגיה לרכישה', color:'#1f5a4e',
+        desc:`הפרופיל שלך מאוזן וחזק בכל הפרמטרים — הצד החזק ביותר הוא ${strongest.short} (${strongest.v}/100). אתה מוכן לעבור משלב הבחינה לשלב הביצוע.` };
+    }
+    if(totalScore >= 72){
+      if(isOutlierWeak) return { label:`לחזק את הצד ${weakest.short}`, color:'#5a7a3e',
+        desc:`הפרופיל שלך טוב כמעט בכל הפרמטרים — הצד ${strongest.short} שלך חזק במיוחד (${strongest.v}/100). הצד ${weakest.ofThe} (${weakest.v}/100) הוא מה שעוד מפריד אותך ממוכנות מלאה.` };
+      if(strongAbove75.length >= 3) return { label:'ליטוש קל לפני רכישה', color:'#5a7a3e',
+        desc:`רוב הפרמטרים שלך כבר ברמה גבוהה. נשאר רק לסדר קצת את ${weakest.short} (${weakest.v}/100) כדי להגיע למוכנות מלאה.` };
+      return { label:'לחזק פרמטרים שעוד לא מאוזנים', color:'#5a7a3e',
+        desc:`התשתית שלך טובה — נקודת חוזק: ${strongest.short} (${strongest.v}). נקודה לחיזוק: ${weakest.short} (${weakest.v}). פוקוס שם יוביל אותך למוכנות מלאה.` };
+    }
+    if(totalScore >= 60){
+      if(isOutlierWeak) return { label:`הצד ${weakest.short} מושך את הציון מטה`, color:'#a58348',
+        desc:`יש לך נקודות חוזק טובות (${strongest.short} ${strongest.v}/100), אבל הצד ${weakest.ofThe} (${weakest.v}/100) הוא הפער המרכזי שכדאי לסגור לפני רכישה.` };
+      if(weakBelow50.length >= 2) return { label:'יש 2 פרמטרים שדורשים חיזוק', color:'#a58348',
+        desc:`הצדדים ${weakBelow50.slice(0,2).map(p=>p.short).join(' ו')} עדיין רחוקים מהרמה הנדרשת לרכישה. מצד שני, ${strongest.short} שלך טוב (${strongest.v}/100).` };
+      return { label:'לחזק 1-2 פרמטרים לפני רכישה', color:'#a58348',
+        desc:`יש לך בסיס יפה — במיוחד ב${strongest.short} (${strongest.v}/100). הפרמטר שכדאי לחזק עכשיו הוא ${weakest.short} (${weakest.v}/100).` };
+    }
+    if(totalScore >= 40){
+      if(isOutlierWeak && strongest.v >= 65) return { label:`הצד ${weakest.short} הוא הפער המרכזי`, color:'#c17840',
+        desc:`יש לך נקודת חוזק יפה ב${strongest.short} (${strongest.v}/100), אבל הצד ${weakest.ofThe} (${weakest.v}/100) חלש משמעותית. ללא חיזוק שלו עדיין מוקדם לרכישה.` };
+      if(weakBelow50.length >= 3) return { label:'פערים מהותיים בכמה פרמטרים', color:'#c17840',
+        desc:`${weakBelow50.length} מהפרמטרים שלך עדיין נמוכים — בעיקר ${weakBelow50.slice(0,2).map(p=>p.short).join(' ו')}. צריך לבנות בסיס לפני שמדברים על רכישה אמיתית.` };
+      return { label:'להמשיך לבנות את הבסיס', color:'#c17840',
+        desc:`אתה בשלב חשוב של בנייה. ${strongest.short} כבר במקום (${strongest.v}/100), נשאר לחזק את ${weakest.short} (${weakest.v}/100) ופרמטרים נוספים.` };
+    }
+    if(strongest.v >= 50) return { label:'יש נקודת אור — נשאר לבנות סביבה', color:'#b85c3e',
+      desc:`למרות שהציון הכולל נמוך, יש לך נקודת אור ב${strongest.short} (${strongest.v}/100). שאר הפרמטרים — במיוחד ${weakest.short} (${weakest.v}/100) — עדיין בהתחלה. צבירת ידע ובנייה הדרגתית יקרבו אותך.` };
     return { label:'ללמוד את התחום ולבנות בסיס', color:'#b85c3e',
-      desc:'אתה בתחילת המסע — וזו נקודת זינוק מצוינת. השלב הבא שלך הוא לצבור ידע על השוק ולהתחיל לבנות בסיס פיננסי.' };
-  },[totalScore]);
+      desc:'אתה בתחילת המסע — וזו נקודת זינוק טובה. השלב הבא שלך הוא לצבור ידע על השוק, לבנות בסיס פיננסי ולחזק את כל הפרמטרים בהדרגה.' };
+  },[totalScore, pillarScores]);
 
   const Celebration = () => celebrating ? (
     <div className="toast" key={celebrating+idx}>
