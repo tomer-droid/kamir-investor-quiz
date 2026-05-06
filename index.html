@@ -1253,34 +1253,45 @@ function App(){
                           {tiers.map((t,i)=>{
                             const isPast = i < currentIdx;
                             const isCurrent = i === currentIdx;
-                            const isFuture = i > currentIdx;
+                            const isFirst = i === 0;
+                            const isLast = i === tiers.length-1;
+                            const labelVisible = isCurrent || isFirst || isLast;
                             return (
                               <React.Fragment key={i}>
-                                <div className="flex flex-col items-center" style={{flex: isCurrent ? '2.2 1 0' : '1 1 0', minWidth:0, position:'relative', alignSelf:'stretch', justifyContent:'flex-start'}}>
+                                <div className="flex flex-col items-center" style={{flex: isCurrent ? '1.6 1 0' : '1 1 0', minWidth:0, position:'relative', alignSelf:'stretch', justifyContent:'flex-start'}}>
                                   {isCurrent && (
                                     <div style={{position:'absolute',top:-14,background:t.color,color:'#fff',fontSize:9,fontWeight:900,padding:'2px 9px',borderRadius:999,letterSpacing:'.4px',boxShadow:`0 4px 10px ${t.color}66`,whiteSpace:'nowrap',zIndex:2}}>אתה כאן</div>
                                   )}
                                   <div style={{
-                                    width: isCurrent ? 46 : 22,
-                                    height: isCurrent ? 46 : 22,
+                                    width: isCurrent ? 46 : 28,
+                                    height: isCurrent ? 46 : 28,
                                     borderRadius:'50%',
-                                    background: isCurrent ? `${t.color}30` : (isPast ? `${t.color}20` : 'rgba(43,49,60,.06)'),
-                                    border: isCurrent ? `3px solid ${t.color}` : (isPast ? `1.5px solid ${t.color}55` : '1.5px dashed rgba(43,49,60,.22)'),
+                                    background: isCurrent ? `${t.color}30` : (isPast ? `${t.color}18` : 'rgba(43,49,60,.04)'),
+                                    border: isCurrent ? `3px solid ${t.color}` : (isPast ? `1.5px solid ${t.color}55` : `1.5px solid rgba(43,49,60,.15)`),
                                     display:'flex',alignItems:'center',justifyContent:'center',
-                                    fontSize: isCurrent ? 26 : 11,
-                                    fontWeight: 900,
-                                    color: isCurrent ? 'inherit' : (isPast ? t.color : 'rgba(43,49,60,.35)'),
+                                    fontSize: isCurrent ? 26 : 14,
                                     transition:'all .3s ease',
                                     filter: isCurrent ? `drop-shadow(0 4px 12px ${t.color}88)` : 'none',
                                     animation: isCurrent ? 'piePulse 2.4s ease-in-out infinite' : 'none',
                                     flexShrink: 0,
-                                  }}>{isCurrent ? t.emoji : (isPast ? '✓' : '?')}</div>
-                                  {isCurrent && (
-                                    <div style={{fontSize:11, fontWeight:900, color:t.color, textAlign:'center', lineHeight:1.15, whiteSpace:'nowrap', marginTop:5}}>{t.label}</div>
-                                  )}
+                                    opacity: isCurrent ? 1 : (isPast ? .9 : .55),
+                                  }}>{t.emoji}</div>
+                                  <div style={{
+                                    fontSize: isCurrent ? 11 : 9,
+                                    fontWeight: isCurrent ? 900 : 700,
+                                    color: isCurrent ? t.color : (isPast ? 'var(--ink-2)' : 'var(--muted)'),
+                                    textAlign:'center',
+                                    lineHeight:1.15,
+                                    whiteSpace:'nowrap',
+                                    marginTop: 5,
+                                    filter: labelVisible ? 'none' : 'blur(3.5px)',
+                                    opacity: labelVisible ? 1 : .6,
+                                    userSelect: labelVisible ? 'auto' : 'none',
+                                    transition:'filter .3s ease',
+                                  }}>{t.label}</div>
                                 </div>
                                 {i < tiers.length-1 && (
-                                  <div style={{flex:'0 0 6px', alignSelf:'center', height:2, background: isPast ? `${t.color}aa` : 'rgba(43,49,60,.15)', borderRadius:2, transition:'background .3s ease'}}/>
+                                  <div style={{flex:'0 0 6px', alignSelf:'center', height:2, background: isPast ? `${t.color}aa` : 'rgba(43,49,60,.15)', borderRadius:2, marginTop:-14, transition:'background .3s ease'}}/>
                                 )}
                               </React.Fragment>
                             );
