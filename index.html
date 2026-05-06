@@ -554,21 +554,35 @@ const BONUS = {
       icon:'🧘',
       btnColor:'#dbd6e8', resultColor:'#6e6388',
       resultTitle:'מודל ה-Hands-Off',
-      resultSub:'אתה מחפש את היציבות והפירות של השקעת נדל"ן בארה"ב: תזרים שוטף וביטחון, בלי להתעסק בצד הניהולי ביום-יום, ולכן המודל האידיאלי עבורך הוא ליווי מקצועי שדואג לכל האופרציה מקצה לקצה, כדי שההשקעה תעבוד בשבילך.' },
+      resultBullets:[
+        {icon:'💰', text:'יציבות ופירות של השקעת נדל"ן בארה"ב: תזרים שוטף וביטחון'},
+        {icon:'🛌', text:'בלי להתעסק בצד הניהולי ביום-יום'},
+      ],
+      resultAction:'המודל האידיאלי עבורך: ליווי מקצועי שדואג לכל האופרציה מקצה לקצה.' },
     { text:'השותף האסטרטגי',
       sub:'אני רוצה להבין מה קורה ולהיות מעורב בהחלטות הגדולות, עם גב מקצועי שמלווה אותי בכל שלב.',
       tag:'השותף האסטרטגי',
       icon:'🤝',
       btnColor:'#d4dcd0', resultColor:'#5f7a5e',
       resultTitle:'מודל הליווי הצמוד',
-      resultSub:'אתה רוצה להבין איך הדברים עובדים, ולהיות מעורב בהחלטות הגדולות אבל בלי לקחת על עצמך את הסיכון או את הלוגיסטיקה הכרוכה בפעולה עצמאית. המודל שנכון לך הוא ליווי שמעניק לך שקיפות מלאה וביטחון בקבלת ההחלטות, בזמן שגורם מקצועי מנהל עבורך את האופרציה ומוודא שהאינטרסים שלך נשמרים בכל שלב.' },
+      resultBullets:[
+        {icon:'🔎', text:'להבין איך הדברים עובדים ולהיות מעורב בהחלטות הגדולות'},
+        {icon:'🛡️', text:'בלי לקחת על עצמך את הסיכון או את הלוגיסטיקה של פעולה עצמאית'},
+        {icon:'🤝', text:'שקיפות מלאה ושמירה על האינטרסים שלך'},
+      ],
+      resultAction:'המודל שנכון לך: ליווי שמנהל עבורך את האופרציה ושומר על האינטרסים שלך.' },
     { text:'היזם השאפתן',
       sub:'אני רוצה ללמוד את התחום לעומק ולעסוק בו. לבנות יכולת עצמאית ולהוביל בעצמי.',
       tag:'היזם השאפתן',
       icon:'🛠️',
       btnColor:'#e3d6cc', resultColor:'#8a6a55',
       resultTitle:'המסלול העצמאי',
-      resultSub:'אתה רוצה להפוך את הנדל"ן ליותר מהשקעה. אתה מחפש לעסוק בתחום לעומק, להוביל תהליכים ולבנות יכולת עצמאית בשטח. בפועל, זה אומר שאתה נכנס למסלול של יזמות אקטיבית. מומלץ להיעזר בהכשרה מקצועית וקהילות משקיעים שיעזרו לך בדרך.' },
+      resultBullets:[
+        {icon:'🚀', text:'להפוך את הנדל"ן ליותר מהשקעה'},
+        {icon:'🎯', text:'לעסוק בתחום לעומק, להוביל תהליכים ולבנות יכולת עצמאית'},
+        {icon:'⚡', text:'מסלול של יזמות אקטיבית'},
+      ],
+      resultAction:'מומלץ להיעזר בהכשרה מקצועית וקהילות משקיעים שיעזרו לך בדרך.' },
   ]
 };
 
@@ -1398,7 +1412,25 @@ function App(){
                       <div className="font-extrabold ink text-lg md:text-xl leading-tight">{bonusInfo.resultTitle}</div>
                     </div>
                   </div>
-                  <div className="text-sm leading-relaxed" style={{color:'var(--ink-2)'}}>{bonusInfo.resultSub}</div>
+                  {bonusInfo.resultBullets && bonusInfo.resultBullets.length > 0 ? (
+                    <>
+                      <ul className="space-y-2 mb-3" style={{listStyle:'none',padding:0}}>
+                        {bonusInfo.resultBullets.map((b,bi)=>(
+                          <li key={bi} className="flex items-start gap-2.5">
+                            <span style={{fontSize:18,flexShrink:0,lineHeight:1.3}}>{b.icon}</span>
+                            <span className="text-sm leading-relaxed" style={{color:'var(--ink-2)'}}>{b.text}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      {bonusInfo.resultAction && (
+                        <div className="mt-3 pt-3 text-sm font-bold leading-relaxed" style={{color:bonusInfo.resultColor,borderTop:`1px solid ${bonusInfo.resultColor}33`}}>
+                          {bonusInfo.resultAction}
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <div className="text-sm leading-relaxed" style={{color:'var(--ink-2)'}}>{bonusInfo.resultSub}</div>
+                  )}
                 </div>
               );
             })()}
