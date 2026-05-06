@@ -914,14 +914,14 @@ function App(){
       if(isOutlierWeak && strongest.v >= 65) return { label:'בונה בסיס', color:'#c17840',
         desc:`הפוקוס שלך כרגע: הצד ${weakest.short}. ללא חיזוק שלו עדיין מוקדם לרכישה.` };
       if(weakBelow50.length >= 3) return { label:'בונה בסיס', color:'#c17840',
-        desc:`${weakBelow50.length} פרמטרים עדיין נמוכים — בעיקר ${weakBelow50.slice(0,2).map(p=>p.short).join(' ו')}. כדאי להתחיל מהם.` };
+        desc:`${weakBelow50.length} פרמטרים עדיין נמוכים, בעיקר ${weakBelow50.slice(0,2).map(p=>p.short).join(' ו')}. כדאי להתחיל מהם.` };
       return { label:'בונה בסיס', color:'#c17840',
         desc:`אתה בשלב חשוב של בנייה. הפרמטר הראשון לחזק: ${weakest.short}.` };
     }
     if(strongest.v >= 50) return { label:'בתחילת המסע', color:'#b85c3e',
-      desc:`יש לך נקודת אור ב${strongest.short}. שאר הפרמטרים — במיוחד ${weakest.short} — עדיין בהתחלה. צבירת ידע ובנייה הדרגתית יקרבו אותך.` };
+      desc:`יש לך נקודת אור ב${strongest.short}. שאר הפרמטרים, במיוחד ${weakest.short}, עדיין בהתחלה. צבירת ידע ובנייה הדרגתית יקרבו אותך.` };
     return { label:'בתחילת המסע', color:'#b85c3e',
-      desc:'אתה בתחילת המסע — וזו נקודת זינוק טובה. השלב הבא שלך הוא לצבור ידע ולבנות בסיס פיננסי.' };
+      desc:'אתה בתחילת המסע, וזו נקודת זינוק טובה. השלב הבא שלך הוא לצבור ידע ולבנות בסיס פיננסי.' };
   },[totalScore, pillarScores]);
 
   const Celebration = () => celebrating ? (
