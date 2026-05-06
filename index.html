@@ -877,7 +877,8 @@ function App(){
     });
     const out = {};
     Object.keys(PILLARS).forEach(k=>{
-      out[k] = acc[k].length ? Math.round(acc[k].reduce((a,b)=>a+b,0)/acc[k].length) : 0;
+      const raw = acc[k].length ? acc[k].reduce((a,b)=>a+b,0)/acc[k].length : 0;
+      out[k] = Math.min(100, Math.round(raw * 1.1));
     });
     return out;
   },[answers,urlResults]);
