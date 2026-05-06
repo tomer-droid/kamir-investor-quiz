@@ -554,7 +554,7 @@ const BONUS = {
       icon:'🧘',
       btnColor:'#dbd6e8', resultColor:'#6e6388',
       resultTitle:'מודל ה-Hands-Off',
-      resultSub:'אתה רוצה את היציבות והפירות של ההשקעה: תזרים שוטף וביטחון, בלי להתעסק בצד הניהולי. זה המודל שמתאים כשעובדים עם מערך מקצועי בשטח שלוקח אחריות על כל מה שמסביב, כך שאתה מקבל דוחות וצ׳קים בקצב קבוע.' },
+      resultSub:'אתה רוצה את היציבות והפירות של ההשקעה: תזרים שוטף וביטחון, בלי להתעסק בצד הניהולי. אתה מקבל דוחות וצ׳קים בקצב קבוע.' },
     { text:'השותף האסטרטגי',
       sub:'אני רוצה להבין מה קורה ולהיות מעורב בהחלטות הגדולות, עם גב מקצועי שמלווה אותי בכל שלב.',
       tag:'השותף האסטרטגי',
@@ -1269,7 +1269,7 @@ function App(){
                                     background: isCurrent ? `${t.color}30` : (isPast ? `${t.color}18` : 'rgba(43,49,60,.04)'),
                                     border: isCurrent ? `3px solid ${t.color}` : (isPast ? `1.5px solid ${t.color}55` : `1.5px solid rgba(43,49,60,.15)`),
                                     display:'flex',alignItems:'center',justifyContent:'center',
-                                    fontSize: isCurrent ? 26 : 14,
+                                    fontSize: isCurrent ? 32 : 14,
                                     transition:'all .3s ease',
                                     filter: isCurrent ? `drop-shadow(0 4px 12px ${t.color}88)` : 'none',
                                     animation: isCurrent ? 'piePulse 2.4s ease-in-out infinite' : 'none',
@@ -1311,23 +1311,23 @@ function App(){
                           window.scrollTo({top:targetY, behavior:'smooth'});
                         }
                       }}
-                      className="mt-3 inline-flex items-center gap-2 font-bold"
+                      className="mt-3 inline-flex items-center gap-1.5 font-bold"
                       style={{
                         background:'#fff',
                         color:tier.color,
-                        border:`1.5px solid ${tier.color}66`,
-                        padding:'7px 14px',
+                        border:`1.5px solid ${tier.color}55`,
+                        padding:'5px 11px',
                         borderRadius:999,
-                        fontSize:13,
+                        fontSize:11.5,
                         cursor:'pointer',
-                        boxShadow:'0 3px 10px rgba(43,49,60,.08)',
+                        boxShadow:'0 2px 8px rgba(43,49,60,.06)',
                         transition:'transform .15s ease, box-shadow .15s ease',
                       }}
-                      onMouseEnter={e=>{e.currentTarget.style.transform='translateY(-2px)';e.currentTarget.style.boxShadow=`0 6px 16px ${tier.color}33`;}}
-                      onMouseLeave={e=>{e.currentTarget.style.transform='translateY(0)';e.currentTarget.style.boxShadow='0 3px 10px rgba(43,49,60,.08)';}}>
-                      <span style={{fontSize:15}}>🎥</span>
+                      onMouseEnter={e=>{e.currentTarget.style.transform='translateY(-2px)';e.currentTarget.style.boxShadow=`0 5px 14px ${tier.color}33`;}}
+                      onMouseLeave={e=>{e.currentTarget.style.transform='translateY(0)';e.currentTarget.style.boxShadow='0 2px 8px rgba(43,49,60,.06)';}}>
+                      <span style={{fontSize:12}}>🎥</span>
                       <span>הסבר מלא ממני בסרטון</span>
-                      <span style={{fontSize:14,fontWeight:900}}>↓</span>
+                      <span style={{fontSize:12,fontWeight:900}}>↓</span>
                     </button>
                   </div>
                   <div className="grid grid-cols-2 gap-2">
