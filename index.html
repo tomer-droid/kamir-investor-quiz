@@ -214,8 +214,8 @@
   @keyframes copyToastIn{0%{opacity:0;transform:translate(-50%,30px) scale(.7);}100%{opacity:1;transform:translate(-50%,0) scale(1);}}
   @keyframes copyToastOut{0%{opacity:1;transform:translate(-50%,0);}100%{opacity:0;transform:translate(-50%,-16px) scale(.92);}}
   @keyframes copyBtnPulse{0%{box-shadow:0 0 0 0 rgba(31,90,78,.7);}70%{box-shadow:0 0 0 16px rgba(31,90,78,0);}100%{box-shadow:0 0 0 0 rgba(31,90,78,0);}}
-  .copy-toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1f5a4e;color:#fff;padding:18px 28px;border-radius:18px;font-weight:800;font-size:16px;box-shadow:0 20px 60px rgba(31,90,78,.55), 0 0 0 1px rgba(255,255,255,.1);z-index:9999;display:flex;flex-direction:column;align-items:center;gap:10px;animation:copyToastIn .4s cubic-bezier(.2,1.4,.3,1), copyToastOut .4s ease 1.8s forwards;pointer-events:none;min-width:220px;text-align:center;}
-  .copy-toast-backdrop{position:fixed;inset:0;background:rgba(43,49,60,.32);z-index:9998;animation:copyBackdropIn .25s ease, copyBackdropOut .35s ease 1.85s forwards;pointer-events:none;}
+  .copy-toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1f5a4e;color:#fff;padding:18px 28px;border-radius:18px;font-weight:800;font-size:16px;box-shadow:0 20px 60px rgba(31,90,78,.55), 0 0 0 1px rgba(255,255,255,.1);z-index:9999;display:flex;flex-direction:column;align-items:center;gap:10px;animation:copyToastIn .22s cubic-bezier(.2,1.4,.3,1), copyToastOut .25s ease .85s forwards;pointer-events:none;min-width:220px;text-align:center;}
+  .copy-toast-backdrop{position:fixed;inset:0;background:rgba(43,49,60,.28);z-index:9998;animation:copyBackdropIn .18s ease, copyBackdropOut .25s ease .9s forwards;pointer-events:none;}
   @keyframes copyBackdropIn{from{opacity:0;}to{opacity:1;}}
   @keyframes copyBackdropOut{from{opacity:1;}to{opacity:0;}}
   .copy-toast .check-circle{width:54px;height:54px;border-radius:50%;background:#fff;color:#1f5a4e;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:32px;animation:copyPop .55s cubic-bezier(.2,1.4,.3,1);box-shadow:0 6px 18px rgba(0,0,0,.15);}
@@ -881,7 +881,8 @@ function App(){
     const out = {};
     Object.keys(PILLARS).forEach(k=>{
       const raw = acc[k].length ? acc[k].reduce((a,b)=>a+b,0)/acc[k].length : 0;
-      out[k] = Math.min(100, Math.round(raw * 1.1));
+      const boost = k === 'financial' ? 1.1 * 1.1 : 1.1; // financial: extra 10% on top of base 10%
+      out[k] = Math.min(100, Math.round(raw * boost));
     });
     return out;
   },[answers,urlResults]);
@@ -1622,7 +1623,7 @@ function App(){
                           toast.className = 'copy-toast';
                           toast.innerHTML = '<span class="check-circle">✓</span><span class="toast-text">הקישור הועתק!</span><span class="toast-sub">אפשר להדביק בכל מקום</span>';
                           document.body.appendChild(toast);
-                          setTimeout(()=>{ toast.remove(); backdrop.remove(); }, 2300);
+                          setTimeout(()=>{ toast.remove(); backdrop.remove(); }, 1200);
                         };
                         if(navigator.clipboard && navigator.clipboard.writeText){
                           navigator.clipboard.writeText(url).then(showSuccess).catch(()=>{
