@@ -1271,33 +1271,35 @@ function App(){
                           {tiers.map((t,i)=>{
                             const isPast = i < currentIdx;
                             const isCurrent = i === currentIdx;
-                            const isFirst = i === 0;
                             const isLast = i === tiers.length-1;
-                            const labelVisible = isCurrent || isFirst || isLast;
+                            // Only current and the goal (last) stage are clearly visible
+                            const labelVisible = isCurrent || isLast;
+                            // Make the goal stage (last) stand out a bit more even when not current
+                            const isGoal = isLast && !isCurrent;
                             return (
                               <React.Fragment key={i}>
-                                <div className="flex flex-col items-center" style={{flex: isCurrent ? '1.6 1 0' : '1 1 0', minWidth:0, position:'relative', alignSelf:'stretch', justifyContent:'flex-start'}}>
+                                <div className="flex flex-col items-center" style={{flex: isCurrent ? '1.6 1 0' : (isGoal ? '1.15 1 0' : '1 1 0'), minWidth:0, position:'relative', alignSelf:'stretch', justifyContent:'flex-start'}}>
                                   {isCurrent && (
                                     <div style={{position:'absolute',top:-14,background:t.color,color:'#fff',fontSize:9,fontWeight:900,padding:'2px 9px',borderRadius:999,letterSpacing:'.4px',boxShadow:`0 4px 10px ${t.color}66`,whiteSpace:'nowrap',zIndex:2}}>אתה כאן</div>
                                   )}
                                   <div style={{
-                                    width: isCurrent ? 46 : 28,
-                                    height: isCurrent ? 46 : 28,
+                                    width: isCurrent ? 46 : (isGoal ? 36 : 28),
+                                    height: isCurrent ? 46 : (isGoal ? 36 : 28),
                                     borderRadius:'50%',
-                                    background: isCurrent ? `${t.color}30` : (isPast ? `${t.color}18` : 'rgba(43,49,60,.04)'),
-                                    border: isCurrent ? `3px solid ${t.color}` : (isPast ? `1.5px solid ${t.color}55` : `1.5px solid rgba(43,49,60,.15)`),
+                                    background: isCurrent ? `${t.color}30` : (isGoal ? `${t.color}25` : (isPast ? `${t.color}18` : 'rgba(43,49,60,.04)')),
+                                    border: isCurrent ? `3px solid ${t.color}` : (isGoal ? `2px solid ${t.color}aa` : (isPast ? `1.5px solid ${t.color}55` : `1.5px solid rgba(43,49,60,.15)`)),
                                     display:'flex',alignItems:'center',justifyContent:'center',
-                                    fontSize: isCurrent ? 32 : 14,
+                                    fontSize: isCurrent ? 32 : (isGoal ? 18 : 14),
                                     transition:'all .3s ease',
-                                    filter: isCurrent ? `drop-shadow(0 4px 12px ${t.color}88)` : 'none',
+                                    filter: isCurrent ? `drop-shadow(0 4px 12px ${t.color}88)` : (isGoal ? `drop-shadow(0 3px 8px ${t.color}55)` : 'none'),
                                     animation: isCurrent ? 'piePulse 2.4s ease-in-out infinite' : 'none',
                                     flexShrink: 0,
-                                    opacity: isCurrent ? 1 : (isPast ? .9 : .55),
+                                    opacity: isCurrent ? 1 : (isGoal ? 1 : (isPast ? .9 : .55)),
                                   }}>{t.emoji}</div>
                                   <div style={{
-                                    fontSize: isCurrent ? 11 : 9,
-                                    fontWeight: isCurrent ? 900 : 700,
-                                    color: isCurrent ? t.color : (isPast ? 'var(--ink-2)' : 'var(--muted)'),
+                                    fontSize: isCurrent ? 11 : (isGoal ? 10 : 9),
+                                    fontWeight: isCurrent ? 900 : (isGoal ? 800 : 700),
+                                    color: isCurrent ? t.color : (isGoal ? t.color : (isPast ? 'var(--ink-2)' : 'var(--muted)')),
                                     textAlign:'center',
                                     lineHeight:1.15,
                                     whiteSpace:'nowrap',
