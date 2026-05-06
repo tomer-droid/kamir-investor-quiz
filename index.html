@@ -1223,9 +1223,6 @@ function App(){
         <div className="flex-1 p-6 md:p-10">
           <div className="max-w-5xl mx-auto fade-in">
             {/* Hero — radar profile + next step */}
-            <div className="text-center mb-4">
-              <h2 className="text-2xl md:text-3xl font-extrabold ink">הפרופיל שלך</h2>
-            </div>
             <div className="surface rounded-3xl p-5 md:p-7 mb-5">
               <div className="flex flex-col-reverse md:flex-row items-center gap-5 md:gap-7">
                 <div className="flex flex-col items-center flex-shrink-0 radar-wrap">
@@ -1284,7 +1281,7 @@ function App(){
                                     lineHeight:1.15,
                                     whiteSpace:'nowrap',
                                     marginTop: 5,
-                                    filter: labelVisible ? 'none' : 'blur(3.5px)',
+                                    filter: labelVisible ? 'none' : 'blur(2px)',
                                     opacity: labelVisible ? 1 : .6,
                                     userSelect: labelVisible ? 'auto' : 'none',
                                     transition:'filter .3s ease',
@@ -1455,12 +1452,12 @@ function App(){
                 <div className="text-xs font-bold mb-2" style={{letterSpacing:'.5px',color:'#d9c29a'}}>מוכן לדבר על התוצאות שלך?</div>
                 <h3 className="text-2xl md:text-3xl font-extrabold leading-tight">בוא נברר אם זה רלוונטי</h3>
               </div>
-              <div className="max-w-lg mx-auto rounded-xl p-5 mb-6" style={{background:'rgba(255,255,255,.06)',border:'1px solid rgba(217,194,154,.2)'}}>
+              <div className="max-w-xl mx-auto rounded-xl p-5 mb-6" style={{background:'rgba(255,255,255,.06)',border:'1px solid rgba(217,194,154,.2)'}}>
                 <div className="text-sm font-bold mb-3" style={{color:'#d9c29a'}}>השיחה הכי רלוונטית כש:</div>
                 <ul className="space-y-2" style={{listStyle:'none',padding:0}}>
                   <li className="flex items-center gap-3"><span style={{color:'#d9c29a',fontWeight:900,flexShrink:0}}>◆</span><span style={{color:'rgba(255,255,255,.92)',whiteSpace:'nowrap',fontSize:'13px'}}>אתה שוקל ברצינות לרכוש נכס בשנה הקרובה</span></li>
-                  <li className="flex items-start gap-3 text-sm"><span style={{color:'#d9c29a',fontWeight:900,flexShrink:0}}>◆</span><span style={{color:'rgba(255,255,255,.92)'}}>יש לך הון של 200K+ ש"ח זמין להשקעה</span></li>
-                  <li className="flex items-start gap-3 text-sm"><span style={{color:'#d9c29a',fontWeight:900,flexShrink:0}}>◆</span><span style={{color:'rgba(255,255,255,.92)'}}>אתה יודע להחליט — ומבין שללמוד מניסיון של אחרים שווה זהב</span></li>
+                  <li className="flex items-center gap-3"><span style={{color:'#d9c29a',fontWeight:900,flexShrink:0}}>◆</span><span style={{color:'rgba(255,255,255,.92)',whiteSpace:'nowrap',fontSize:'13px'}}>יש לך הון של 200K+ ש"ח זמין להשקעה</span></li>
+                  <li className="flex items-center gap-3"><span style={{color:'#d9c29a',fontWeight:900,flexShrink:0}}>◆</span><span style={{color:'rgba(255,255,255,.92)',whiteSpace:'nowrap',fontSize:'13px'}}>אתה יודע להחליט</span></li>
                 </ul>
               </div>
               <div className="flex flex-col items-center">
