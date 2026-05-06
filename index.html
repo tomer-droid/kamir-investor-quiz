@@ -1100,27 +1100,26 @@ function App(){
         <div className="max-w-3xl w-full fade-in">
           <div className="text-center">
             <div className="bonus-badge"><span className="spark">✨</span>{BONUS.intro}<span className="spark">🎁</span></div>
-            <h2 className="text-2xl md:text-3xl font-bold mb-1 ink">{BONUS.title}</h2>
-            <div className="text-xs muted mb-2">{BONUS.hint}</div>
-            <div className="text-xs font-bold ink mb-6" style={{opacity:.7}}>בחר את הסגנון שמתאר אותך הכי טוב 👇</div>
+            <h2 className="text-xl md:text-3xl font-bold mb-1 ink">{BONUS.title}</h2>
+            <div className="text-xs font-bold ink mb-4 md:mb-6" style={{opacity:.7}}>בחר את הסגנון שמתאר אותך הכי טוב 👇</div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 md:gap-4">
             {BONUS.options.map((o,i)=>(
               <button key={i} onClick={()=>{setBonus(i);setScreen('gate');}}
-                className="persona-card text-center rounded-2xl p-5 md:p-6 relative overflow-hidden"
-                style={{background:`linear-gradient(165deg, ${o.btnColor}66, ${o.btnColor}aa)`,border:`2px solid ${o.btnColor}`,cursor:'pointer',transition:'all .25s cubic-bezier(.2,.8,.2,1)',boxShadow:`0 6px 18px ${o.btnColor}33`}}
-                onMouseEnter={e=>{e.currentTarget.style.transform='translateY(-6px) scale(1.02)';e.currentTarget.style.boxShadow=`0 16px 36px ${o.btnColor}66`;}}
-                onMouseLeave={e=>{e.currentTarget.style.transform='translateY(0) scale(1)';e.currentTarget.style.boxShadow=`0 6px 18px ${o.btnColor}33`;}}>
+                className="persona-card relative overflow-hidden"
+                style={{background:`linear-gradient(165deg, ${o.btnColor}66, ${o.btnColor}aa)`,border:`2px solid ${o.btnColor}`,cursor:'pointer',transition:'all .25s cubic-bezier(.2,.8,.2,1)',boxShadow:`0 4px 14px ${o.btnColor}33`,borderRadius:16}}
+                onMouseEnter={e=>{e.currentTarget.style.transform='translateY(-5px) scale(1.02)';e.currentTarget.style.boxShadow=`0 14px 30px ${o.btnColor}66`;}}
+                onMouseLeave={e=>{e.currentTarget.style.transform='translateY(0) scale(1)';e.currentTarget.style.boxShadow=`0 4px 14px ${o.btnColor}33`;}}>
                 {/* Decorative blob */}
-                <div style={{position:'absolute',top:-40,right:-40,width:140,height:140,borderRadius:'50%',background:`${o.btnColor}`,opacity:.55,filter:'blur(40px)'}}></div>
-                <div className="relative">
-                  {/* Big icon in circle */}
-                  <div style={{width:72,height:72,margin:'0 auto 12px',borderRadius:'50%',background:'rgba(255,255,255,.7)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:36,boxShadow:'0 8px 20px rgba(43,49,60,.12), inset 0 -3px 8px rgba(43,49,60,.06)'}}>{o.icon}</div>
-                  <div className="font-extrabold ink mb-2" style={{fontSize:'18px',letterSpacing:'.2px'}}>{o.text}</div>
-                  <div className="text-sm leading-relaxed" style={{color:'#3d3a30'}}>{o.sub}</div>
-                  <div className="mt-4 inline-flex items-center gap-1.5 font-bold" style={{color:'#3d3a30',fontSize:12,opacity:.85}}>
-                    <span>בחר</span>
-                    <span style={{fontSize:14}}>←</span>
+                <div style={{position:'absolute',top:-30,right:-30,width:110,height:110,borderRadius:'50%',background:`${o.btnColor}`,opacity:.55,filter:'blur(35px)'}}></div>
+                {/* Mobile: horizontal compact / Desktop: vertical centered */}
+                <div className="relative md:text-center" style={{padding:'12px 14px'}}>
+                  <div className="flex md:flex-col items-center md:items-stretch gap-3 md:gap-0">
+                    <div style={{width:54,height:54,borderRadius:'50%',background:'rgba(255,255,255,.78)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:26,boxShadow:'0 6px 14px rgba(43,49,60,.10)',flexShrink:0,margin:'0 auto'}} className="md:mb-3">{o.icon}</div>
+                    <div className="flex-1 text-right md:text-center min-w-0">
+                      <div className="font-extrabold ink mb-0.5 md:mb-1.5" style={{fontSize:'15px',letterSpacing:'.1px',lineHeight:1.2}}>{o.text}</div>
+                      <div className="leading-snug" style={{color:'#3d3a30',fontSize:'12px'}}>{o.sub}</div>
+                    </div>
                   </div>
                 </div>
               </button>
