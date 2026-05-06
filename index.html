@@ -588,8 +588,8 @@ const BONUS = {
 /* ========= CTA helpers ========= */
 function waLink(lead, tier, score){
   const name = (lead && lead.name) ? lead.name.trim() : '';
-  const opener = name ? `היי תומר! 👋 אני ${name}.` : 'היי תומר! 👋';
-  const msg = `${opener}\nסיימתי עכשיו את שאלון המוכנות וקיבלתי ציון ${score}.\nשמח לקבל ממך מילה על התוצאות שלי 🙏`;
+  const opener = name ? `היי תומר 👋\n${name} כאן, סיימתי עכשיו את שאלון המוכנות.` : 'היי תומר 👋\nסיימתי עכשיו את שאלון המוכנות.';
+  const msg = `${opener}\nשוקל ברצינות להשקיע בנדל"ן בארה"ב ואשמח להבין איך להתקדם מכאן.`;
   return `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
 }
 
