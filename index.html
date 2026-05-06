@@ -1302,6 +1302,33 @@ function App(){
                     <div className="text-xs font-bold mb-1" style={{color:tier.color, letterSpacing:'.4px'}}>↓ המצב שלך</div>
                     <div className="font-extrabold ink text-lg md:text-xl leading-tight mb-1">{tier.label}</div>
                     <div className="text-sm leading-relaxed" style={{color:'var(--ink-2)'}}>{tier.desc}</div>
+                    <button
+                      onClick={()=>{
+                        const el = document.getElementById('yt-section');
+                        if(el){
+                          const rect = el.getBoundingClientRect();
+                          const targetY = window.scrollY + rect.top - window.innerHeight*0.10;
+                          window.scrollTo({top:targetY, behavior:'smooth'});
+                        }
+                      }}
+                      className="mt-3 inline-flex items-center gap-2 font-bold"
+                      style={{
+                        background:'#fff',
+                        color:tier.color,
+                        border:`1.5px solid ${tier.color}66`,
+                        padding:'7px 14px',
+                        borderRadius:999,
+                        fontSize:13,
+                        cursor:'pointer',
+                        boxShadow:'0 3px 10px rgba(43,49,60,.08)',
+                        transition:'transform .15s ease, box-shadow .15s ease',
+                      }}
+                      onMouseEnter={e=>{e.currentTarget.style.transform='translateY(-2px)';e.currentTarget.style.boxShadow=`0 6px 16px ${tier.color}33`;}}
+                      onMouseLeave={e=>{e.currentTarget.style.transform='translateY(0)';e.currentTarget.style.boxShadow='0 3px 10px rgba(43,49,60,.08)';}}>
+                      <span style={{fontSize:15}}>🎥</span>
+                      <span>הסבר מלא ממני בסרטון</span>
+                      <span style={{fontSize:14,fontWeight:900}}>↓</span>
+                    </button>
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     {Object.entries(PILLARS).map(([k,p])=>{
@@ -1389,7 +1416,7 @@ function App(){
             </div>
 
             {/* YouTube video — featured (more dominant on mobile) */}
-            <div className="rounded-2xl p-5 md:p-8 mb-6 yt-featured" style={{background:'linear-gradient(135deg, #faf4e4, #f4e8c8)', border:'3px solid rgba(165,131,72,.4)', boxShadow:'0 18px 44px rgba(43,49,60,.14), 0 0 0 4px rgba(165,131,72,.08)'}}>
+            <div id="yt-section" className="rounded-2xl p-5 md:p-8 mb-6 yt-featured" style={{background:'linear-gradient(135deg, #faf4e4, #f4e8c8)', border:'3px solid rgba(165,131,72,.4)', boxShadow:'0 18px 44px rgba(43,49,60,.14), 0 0 0 4px rgba(165,131,72,.08)'}}>
               <div className="flex items-center gap-2 mb-2 flex-wrap">
                 <span style={{display:'inline-flex',alignItems:'center',gap:6,padding:'4px 12px',borderRadius:999,background:'#a58348',color:'#fff',fontSize:11,fontWeight:800,letterSpacing:'.5px'}}>🎬 מומלץ לצפייה</span>
                 <div className="text-xs font-bold" style={{color:'#a58348',letterSpacing:'.4px'}}>מסר אישי מתומר</div>
