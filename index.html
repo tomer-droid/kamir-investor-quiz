@@ -1565,29 +1565,26 @@ function App(){
                       <button onClick={(e)=>{
                         const btn = e.currentTarget;
                         const showSuccess = ()=>{
-                          const origHTML = btn.innerHTML;
-                          const origBg = btn.style.background;
-                          btn.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#fff;color:#1f5a4e;font-weight:900;font-size:14px;animation:copyPop .55s cubic-bezier(.2,1.4,.3,1)">✓</span> הועתק!';
-                          btn.style.background = '#1f5a4e';
+                          // Brief acknowledgement on the button (color + pulse, no width change)
                           btn.classList.add('btn-copied');
+                          setTimeout(()=>{ btn.classList.remove('btn-copied'); }, 1300);
                           // Big centered toast
+                          if(document.querySelector('.copy-toast')) return;
                           const toast = document.createElement('div');
                           toast.className = 'copy-toast';
                           toast.innerHTML = '<span class="check-circle">✓</span><span class="toast-text">הקישור הועתק!</span><span class="toast-sub">אפשר להדביק בכל מקום</span>';
                           document.body.appendChild(toast);
                           setTimeout(()=>{ toast.remove(); }, 2300);
-                          setTimeout(()=>{ btn.innerHTML = origHTML; btn.style.background = origBg; btn.classList.remove('btn-copied'); }, 2400);
                         };
                         if(navigator.clipboard && navigator.clipboard.writeText){
                           navigator.clipboard.writeText(url).then(showSuccess).catch(()=>{
-                            // Fallback for older browsers
                             const ta=document.createElement('textarea');ta.value=url;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');showSuccess();}catch(e){}finally{ta.remove();}
                           });
                         } else {
                           const ta=document.createElement('textarea');ta.value=url;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');showSuccess();}catch(e){}finally{ta.remove();}
                         }
                       }} className="font-extrabold px-5 py-2.5 rounded-xl inline-flex items-center gap-2"
-                        style={{background:'var(--ink)',color:'#fff',boxShadow:'0 4px 12px rgba(43,49,60,.30)',fontSize:'14px',cursor:'pointer',transition:'background .3s ease'}}>
+                        style={{background:'var(--ink)',color:'#fff',boxShadow:'0 4px 12px rgba(43,49,60,.30)',fontSize:'14px',cursor:'pointer',transition:'transform .2s ease'}}>
                         <span style={{fontSize:16}}>🔗</span>
                         העתק קישור
                       </button>
