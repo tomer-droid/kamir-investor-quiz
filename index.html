@@ -1475,6 +1475,23 @@ function App(){
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       allowFullScreen></iframe>
                   </div>
+                  <a href="https://fit-call-form.vercel.app/" target="_blank" rel="noopener"
+                    className="mt-4 w-full font-extrabold rounded-xl flex items-center justify-center gap-2"
+                    style={{
+                      background:'linear-gradient(135deg, #1f5a4e, #2d7a5f)',
+                      color:'#fff',
+                      padding:'14px 22px',
+                      fontSize:'16px',
+                      boxShadow:'0 8px 22px rgba(31,90,78,.35)',
+                      transition:'transform .15s ease, box-shadow .15s ease',
+                      textDecoration:'none',
+                    }}
+                    onMouseEnter={e=>{e.currentTarget.style.transform='translateY(-2px)';e.currentTarget.style.boxShadow='0 12px 28px rgba(31,90,78,.5)';}}
+                    onMouseLeave={e=>{e.currentTarget.style.transform='translateY(0)';e.currentTarget.style.boxShadow='0 8px 22px rgba(31,90,78,.35)';}}>
+                    <span style={{fontSize:18}}>📅</span>
+                    <span>קישור לשאלון וקביעת פגישה</span>
+                    <span style={{fontSize:16}}>←</span>
+                  </a>
                   <a href={`https://www.youtube.com/watch?v=${CONFIG.youtubeId}${CONFIG.youtubeStart?`&t=${CONFIG.youtubeStart}s`:''}`}
                      target="_blank" rel="noopener"
                      className="block text-center text-xs muted mt-3 hover:text-black underline">
