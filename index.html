@@ -8,6 +8,10 @@
 <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<!-- Meta Pixel base loader (init מתבצע מתוך React לפי CONFIG.metaPixelId) -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&family=Heebo:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -433,6 +437,7 @@ const { useState, useMemo, useEffect } = React;
 /* ========= הגדרות לעריכה ========= */
 const CONFIG = {
   whatsapp: '972528022296',
+  metaPixelId: '1503846370672446',
   sheetsWebhook: 'https://script.google.com/macros/s/AKfycbyr-M5cwsYlGhZ81ZAtEUkgArJpzIAhiR5oa42GlAUXp-uIrLzLsyP5sTW6DfuKWk36/exec',
   calendly: '',
   youtubeId: 'cSyQyycwlao',
@@ -619,6 +624,25 @@ async function sendToSheets(payload){
       body:JSON.stringify(payload),
     });
   }catch(e){ console.warn('Sheets error', e); }
+}
+
+function getSID(){
+  try{
+    let s = sessionStorage.getItem('quiz_sid');
+    if(!s){ s = Date.now().toString(36) + Math.random().toString(36).slice(2,8); sessionStorage.setItem('quiz_sid', s); }
+    return s;
+  }catch(e){ return 'na'; }
+}
+
+// Fires a funnel event to BOTH the Meta Pixel (custom event) and the Sheets webhook (via sendBeacon so it survives page-unload).
+function track(step, extra){
+  try{ if(window.fbq && CONFIG.metaPixelId) window.fbq('trackCustom', step, extra||{}); }catch(e){}
+  if(!CONFIG.sheetsWebhook) return;
+  try{
+    const body = JSON.stringify(Object.assign({ type:'funnel', step:step, sid:getSID() }, extra||{}));
+    if(navigator.sendBeacon){ navigator.sendBeacon(CONFIG.sheetsWebhook, body); }
+    else{ fetch(CONFIG.sheetsWebhook, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body}); }
+  }catch(e){}
 }
 
 /* ========= קומפוננטות ========= */
@@ -840,6 +864,28 @@ function App(){
       setScreen('results');
     }
   },[]);
+
+  // ===== מעקב משפך =====
+  const isDeepLink = () => { try{ return !!new URLSearchParams(window.location.search).get('s'); }catch(e){ return false; } };
+
+  useEffect(()=>{
+    if(CONFIG.metaPixelId && window.fbq){ window.fbq('init', CONFIG.metaPixelId); window.fbq('track','PageView'); }
+  },[]);
+
+  // שלב כללי במשפך לפי המסך (דילוג על מבקרי deep-link שמגיעים ישר לתוצאות)
+  useEffect(()=>{
+    if(isDeepLink()) return;
+    if(screen==='landing') track('LandingView');
+    else if(screen==='quiz') track('QuizStart');
+    else if(screen==='bonus') track('BonusView');
+    else if(screen==='gate') track('GateView');
+  },[screen]);
+
+  // הגעה לכל שאלה (Q01..Q15) — מאפשר לראות נשירה פר-שאלה
+  useEffect(()=>{
+    if(isDeepLink() || screen!=='quiz') return;
+    track('Q'+String(idx+1).padStart(2,'0'));
+  },[idx,screen]);
 
   const total = QUESTIONS.length;
 
@@ -1179,6 +1225,8 @@ function App(){
         bonus:bonus!=null?BONUS.options[bonus].tag:'',
       };
       sendToSheets(payload);
+      track('LeadComplete', {score: totalScore});
+      try{ if(window.fbq && CONFIG.metaPixelId) window.fbq('track','Lead',{value:0,currency:'ILS'}); }catch(e){}
       setScreen('results');
     };
 
